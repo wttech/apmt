@@ -1,3 +1,6 @@
+import com.cognifide.aem.apmt.Group
+import com.cognifide.aem.apmt.User
+
 enum class Users(
     override val password: String,
     override val username: String,
