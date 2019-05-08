@@ -2,6 +2,9 @@ import com.cognifide.aem.apmt.PermissionTest
 
 class ExampleTest : PermissionTest({
 
+    registerUsers(Users.values())
+    registerGroups(Groups.values())
+
     "add assets" {
         test = JavaTest::pathContainsUser
         addPath("/content/sites/author")
