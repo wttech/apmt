@@ -4,9 +4,9 @@ class PermissionTestsConfiguration(
     internal val testCaseConfigurations: MutableList<TestCaseConfiguration> = mutableListOf()
 ) {
 
-    fun testCase(name: String, initConfiguration: TestCaseConfiguration.() -> Unit) {
+    operator fun String.invoke(initConfiguration: TestCaseConfiguration.() -> Unit) {
         val configuration = TestCaseConfiguration().apply(initConfiguration)
-        configuration.name = name
+        configuration.name = this
         testCaseConfigurations.add(configuration)
     }
 }
