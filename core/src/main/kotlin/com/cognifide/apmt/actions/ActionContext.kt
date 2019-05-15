@@ -1,6 +1,8 @@
 package com.cognifide.apmt.actions
 
 import com.cognifide.apmt.User
+import com.cognifide.apmt.actions.Aem.CSRF_ENDPOINT
+import com.cognifide.apmt.actions.Aem.CSRF_TOKEN
 import com.cognifide.apmt.config.Instance
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -11,8 +13,8 @@ object ActionContext {
     fun basicRequestSpec(user: User, instance: Instance): RequestSpecification {
         return RestAssured
             .given()
-            .header("CSRF-Token", obtainCsrfToken(user, instance))
-            .auth().basic(user.username, user.password)
+            .header(CSRF_TOKEN, obtainCsrfToken(user, instance))
+            .auth().preemptive().basic(user.username, user.password)
     }
 
     private fun obtainCsrfToken(user: User, instance: Instance): String {
@@ -20,7 +22,7 @@ object ActionContext {
             .given()
             .auth().preemptive().basic(user.username, user.password)
             .`when`()
-            .get(instance.url + "/libs/granite/csrf/token.json")
+            .get(instance.url + CSRF_ENDPOINT)
             .then()
             .contentType(ContentType.JSON)
             .extract().path("token")

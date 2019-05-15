@@ -3,8 +3,8 @@ package com.cognifide.apmt
 import com.cognifide.apmt.config.Instance
 
 val TEST_USER = object : User {
-    override val username: String = ""
-    override val password: String = ""
+    override val username: String = "testuser"
+    override val password: String = "testpassword"
     override val groups: List<Group> = emptyList()
 }
 

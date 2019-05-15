@@ -4,7 +4,6 @@ import com.cognifide.apmt.MOCK_SERVER
 import com.cognifide.apmt.TEST_USER
 import com.cognifide.apmt.junit.AemStub
 import com.cognifide.apmt.junit.HumanReadableCamelCase
-import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -25,12 +24,10 @@ class ReadResourceTest {
 
     @Test
     @AemStub
-    fun callingExecutePerformsGet(server: WireMockServer) {
+    fun callingExecutePerformsGet() {
         stubFor(
             get(urlPathEqualTo("/readResource"))
-                .willReturn(
-                    ok()
-                )
+                .willReturn(ok())
         )
 
         readResource.execute()
