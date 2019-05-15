@@ -1,4 +1,4 @@
-package com.cognifide.aem.apmt
+package com.cognifide.apmt
 
 interface Group {
 

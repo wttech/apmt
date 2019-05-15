@@ -1,26 +1,39 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.30"
+    kotlin("jvm") version "1.3.31" apply false
 }
 
-group = "com.cognifide.aem"
-version = "1.0-SNAPSHOT"
+description = "AEM Permisson Matrix Tester"
 
-repositories {
-    mavenCentral()
-}
+subprojects {
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.4.2")
-}
+    plugins.withId("kotlin") {
+        tasks.named<Test>("test") {
+            useJUnitPlatform()
+            testLogging {
+                events = setOf(
+                    TestLogEvent.STANDARD_OUT,
+                    TestLogEvent.STANDARD_ERROR,
+                    TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.SKIPPED
+                )
+            }
+        }
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
+        tasks.withType<KotlinCompile> {
+            kotlinOptions.jvmTarget = "1.8"
+        }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+        dependencies {
+            "implementation"(kotlin("stdlib-jdk8"))
+            "implementation"("org.junit.jupiter:junit-jupiter-api:5.4.2")
+            "testRuntime"("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.cognifide.aem.apmt
+package com.cognifide.apmt
 
 class PermissionTestsConfiguration(
     internal val users: MutableList<User> = mutableListOf(),
