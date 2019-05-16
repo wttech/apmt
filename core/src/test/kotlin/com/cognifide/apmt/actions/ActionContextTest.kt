@@ -2,9 +2,7 @@ package com.cognifide.apmt.actions
 
 import com.cognifide.apmt.MOCK_SERVER
 import com.cognifide.apmt.TEST_USER
-import com.cognifide.apmt.actions.Aem.CSRF_ENDPOINT
-import com.cognifide.apmt.actions.Aem.CSRF_TOKEN
-import com.cognifide.apmt.junit.AemStub
+import com.cognifide.apmt.util.AemStub
 import com.github.tomakehurst.wiremock.client.BasicCredentials
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.Test
@@ -14,14 +12,6 @@ class ActionContextTest {
     @Test
     @AemStub
     fun basicRequestSpecHasCsrfToken() {
-        val token = "CORRECT_TOKEN"
-
-        stubFor(
-            get(urlPathEqualTo(CSRF_ENDPOINT))
-                .withBasicAuth(TEST_USER.username, TEST_USER.password)
-                .willReturn(okJson("{ \"token\": \"$token\" }"))
-        )
-
         stubFor(
             get(urlPathEqualTo("/"))
                 .withBasicAuth(TEST_USER.username, TEST_USER.password)
@@ -38,7 +28,7 @@ class ActionContextTest {
 
         verify(
             getRequestedFor(urlPathEqualTo("/"))
-                .withHeader(CSRF_TOKEN, equalTo(token))
+                .withHeader(CSRF_TOKEN, equalTo("CORRECT_TOKEN"))
                 .withBasicAuth(BasicCredentials(TEST_USER.username, TEST_USER.password))
         )
     }

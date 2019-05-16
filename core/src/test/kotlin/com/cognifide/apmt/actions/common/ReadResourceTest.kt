@@ -2,8 +2,8 @@ package com.cognifide.apmt.actions.common
 
 import com.cognifide.apmt.MOCK_SERVER
 import com.cognifide.apmt.TEST_USER
-import com.cognifide.apmt.junit.AemStub
-import com.cognifide.apmt.junit.HumanReadableCamelCase
+import com.cognifide.apmt.util.AemStub
+import com.cognifide.apmt.util.HumanReadableCamelCase
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull

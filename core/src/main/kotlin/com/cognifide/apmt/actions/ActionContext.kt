@@ -1,8 +1,6 @@
 package com.cognifide.apmt.actions
 
 import com.cognifide.apmt.User
-import com.cognifide.apmt.actions.Aem.CSRF_ENDPOINT
-import com.cognifide.apmt.actions.Aem.CSRF_TOKEN
 import com.cognifide.apmt.config.Instance
 import io.restassured.RestAssured
 import io.restassured.http.ContentType

@@ -1,4 +1,4 @@
-package com.cognifide.apmt.junit
+package com.cognifide.apmt.util
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import org.junit.jupiter.api.extension.ExtensionContext

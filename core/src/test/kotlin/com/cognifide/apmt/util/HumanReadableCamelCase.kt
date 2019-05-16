@@ -1,4 +1,4 @@
-package com.cognifide.apmt.junit
+package com.cognifide.apmt.util
 
 import org.apache.commons.lang3.StringUtils
 import org.junit.jupiter.api.DisplayNameGenerator

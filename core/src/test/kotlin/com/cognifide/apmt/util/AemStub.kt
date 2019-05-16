@@ -1,4 +1,4 @@
-package com.cognifide.apmt.junit
+package com.cognifide.apmt.util
 
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.Extensions
