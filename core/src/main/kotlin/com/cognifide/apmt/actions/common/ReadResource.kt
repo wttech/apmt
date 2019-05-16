@@ -6,11 +6,7 @@ import com.cognifide.apmt.actions.ActionContext
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
 
-class ReadResource(
-    val instance: Instance,
-    val user: User,
-    val path: String
-) : Action {
+class ReadResource(override val instance: Instance, override val user: User, override val path: String) : Action {
     override fun prepare(): Response? = null
 
     override fun execute(): Response? {
