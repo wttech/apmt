@@ -1,6 +1,8 @@
 import com.cognifide.apmt.Checks
 import com.cognifide.apmt.PermissionTest
+import org.junit.jupiter.api.Disabled
 
+@Disabled
 class ExampleTest : PermissionTest({
 
     registerUsers(Users.values())

@@ -1,3 +1,5 @@
 package com.cognifide.apmt.config
 
-data class Instance(val name: String, val url: String)
+import com.cognifide.apmt.User
+
+data class Instance(val name: String, val url: String, val adminUser: User)
