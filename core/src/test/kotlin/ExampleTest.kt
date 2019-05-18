@@ -10,7 +10,6 @@ class ExampleTest : PermissionTest({
         test = Checks::pathContainsUser
         addPath("/content/sites/author")
         addUser(Users.GLOBAL_AUTHOR)
-        addUser(Users.PL_AUTHOR)
     }
 
     "modify assets" {
