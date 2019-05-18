@@ -3,6 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.31" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "8.0.0"
+}
+
+repositories {
+    jcenter()
 }
 
 description = "AEM Permisson Matrix Tester"
