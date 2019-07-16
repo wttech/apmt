@@ -1,12 +1,10 @@
-import com.cognifide.apmt.Checks
-import com.cognifide.apmt.PermissionTest
+import com.cognifide.apmt.tests.TestWitCallbacks
 
-class ExampleTest : PermissionTest({
+class ExampleTest2 : TestWitCallbacks({
 
     registerUsers(Users.values())
 
     "add assets" {
-        test = Checks::pathContainsUser
         addPath("/content/sites/publish")
         addPath("/content/sites/something")
         addUser(Users.GLOBAL_AUTHOR)
@@ -14,7 +12,6 @@ class ExampleTest : PermissionTest({
     }
 
     "modify assets" {
-        test = Checks::alwaysSuccess
         addPath("/content/sites/site")
         addUser(Users.GLOBAL_AUTHOR)
     }
