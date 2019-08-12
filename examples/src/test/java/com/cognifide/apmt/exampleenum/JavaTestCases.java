@@ -1,6 +1,9 @@
 package com.cognifide.apmt.exampleenum;
 
-import com.cognifide.apmt.*;
+import com.cognifide.apmt.JavaUsers;
+import com.cognifide.apmt.TestCase;
+import com.cognifide.apmt.TestCaseConfiguration;
+import com.cognifide.apmt.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +36,6 @@ public enum JavaTestCases implements TestCase {
     @NotNull
     @Override
     public TestCaseConfiguration toTestCaseConfiguration() {
-        return new TestCaseConfiguration(Lists.newArrayList(KotlinUsers.values()), users, paths);
+        return new TestCaseConfiguration(Lists.newArrayList(JavaUsers.values()), users, paths);
     }
 }

@@ -39,6 +39,7 @@ open class CreateAssetsTest(private val testCaseConfiguration: TestCaseConfigura
 
     @DisplayName("User cannot create assets")
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
+    @MethodSource("sourceUserCannotCreateAssets")
     fun userCannotCreateAssets(user: User, path: String) {
         undoAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
 
@@ -53,7 +54,6 @@ open class CreateAssetsTest(private val testCaseConfiguration: TestCaseConfigura
     fun cleanUp() {
         undoAction!!.undo()
     }
-
 
     fun sourceUserCanCreateAssets() = createArguments(testCaseConfiguration)
 
