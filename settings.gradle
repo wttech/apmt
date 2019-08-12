@@ -1,4 +1,5 @@
 rootProject.name = 'apmt'
 
 include 'core'
+include 'examples'
 include 'integration-tests'

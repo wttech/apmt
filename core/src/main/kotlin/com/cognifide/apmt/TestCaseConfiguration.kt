@@ -1,19 +1,23 @@
 package com.cognifide.apmt
 
-import kotlin.reflect.KFunction2
-
 class TestCaseConfiguration(
-    var name: String = "",
-    var test: KFunction2<String, String, Unit>? = null,
-    internal val paths: MutableList<String> = mutableListOf(),
-    internal val users: MutableList<User> = mutableListOf()
+    val allUsers: MutableList<User> = mutableListOf(),
+    internal val users: MutableList<User> = mutableListOf(),
+    internal val paths: MutableList<String> = mutableListOf()
 ) {
 
-    fun addPath(path: String) {
-        paths.add(path)
+    fun allUsers(users: Array<out User>) = this.allUsers.addAll(users)
+    fun allUsers(users: List<User>) = this.allUsers.addAll(users)
+
+    fun paths(vararg paths: String) {
+        for (path in paths) {
+            this.paths.add(path)
+        }
     }
 
-    fun addUser(user: User) {
-        users.add(user)
+    fun users(vararg users: User) {
+        for (user in users) {
+            this.users.add(user)
+        }
     }
 }
