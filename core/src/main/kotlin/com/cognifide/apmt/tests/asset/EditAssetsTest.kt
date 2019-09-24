@@ -1,7 +1,6 @@
 package com.cognifide.apmt.tests.asset
 
 import com.cognifide.apmt.TestCase
-import com.cognifide.apmt.TestCaseConfiguration
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.asset.AssetEdition
@@ -15,13 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to edit asset")
-open class EditAssetsTest(private val testCaseConfiguration: TestCaseConfiguration) {
-
-    constructor(testCaseConfiguration: TestCaseConfiguration.() -> Unit)
-            : this(TestCaseConfiguration().apply(testCaseConfiguration))
-
-    constructor(testCase: TestCase)
-            : this(testCase.toTestCaseConfiguration())
+open class EditAssetsTest(private vararg val testCases: TestCase) {
 
     private var undoAction: Action? = null
 
@@ -46,5 +39,5 @@ open class EditAssetsTest(private val testCaseConfiguration: TestCaseConfigurati
         undoAction!!.undo()
     }
 
-    fun sourceUserCanEditAssets() = createArguments(testCaseConfiguration)
+    fun sourceUserCanEditAssets() = createArguments(testCases.map { it.toTestCaseConfiguration() })
 }

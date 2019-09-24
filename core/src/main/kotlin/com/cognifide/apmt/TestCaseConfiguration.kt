@@ -1,23 +1,26 @@
 package com.cognifide.apmt
 
-class TestCaseConfiguration(
-    val allUsers: MutableList<User> = mutableListOf(),
-    internal val users: MutableList<User> = mutableListOf(),
-    internal val paths: MutableList<String> = mutableListOf()
+
+class TestCaseConfiguration @JvmOverloads constructor(
+    internal var users: List<User> = listOf(),
+    internal var paths: List<String> = listOf(),
+    internal var allUsers: List<User> = listOf(),
+    internal var predicate: (user: User, path: String) -> Boolean = { _, _ -> true }
 ) {
 
-    fun allUsers(users: Array<out User>) = this.allUsers.addAll(users)
-    fun allUsers(users: List<User>) = this.allUsers.addAll(users)
+    fun allUsers(allUsers: Array<out User>) {
+        this.allUsers = allUsers.toList()
+    }
+
+    fun allUsers(allUsers: List<User>) {
+        this.allUsers = allUsers
+    }
 
     fun paths(vararg paths: String) {
-        for (path in paths) {
-            this.paths.add(path)
-        }
+        this.paths = paths.toList()
     }
 
     fun users(vararg users: User) {
-        for (user in users) {
-            this.users.add(user)
-        }
+        this.users = users.toList()
     }
 }

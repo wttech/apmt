@@ -3,31 +3,46 @@ package com.cognifide.apmt
 import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.params.provider.Arguments
 
-fun createArguments(testCase: TestCaseConfiguration): List<Arguments> {
-    val arguments = mutableListOf<Arguments>()
-    pairs(testCase.users, testCase.paths).forEach { arguments.add(Arguments.of(it.first, it.second)) }
+typealias UserAndPath = Pair<User, String>
 
-    Assumptions.assumeFalse(arguments.isEmpty(), "No arguments")
-
-    return arguments.toList()
+fun createArguments(testCases: List<TestCaseConfiguration>): List<Arguments> {
+    return toArguments(testCases.flatMap { createArguments(it) }.toSet())
 }
 
-fun createInvertedArguments(testCase: TestCaseConfiguration): List<Arguments> {
-    val arguments = mutableListOf<Arguments>()
+fun createArguments(testCase: TestCaseConfiguration): List<UserAndPath> {
+    return pairs(testCase.users, testCase.paths, testCase.predicate)
+}
+
+fun createInvertedArguments(testCases: List<TestCaseConfiguration>): List<Arguments> {
+    return toArguments(testCases.flatMap { createInvertedArguments(it) }.toSet())
+}
+
+fun createInvertedArguments(testCase: TestCaseConfiguration): List<UserAndPath> {
     val allPairs = pairs(testCase.allUsers, testCase.paths)
-    val pairs = allPairs - pairs(testCase.users, testCase.paths)
-    pairs.forEach { arguments.add(Arguments.of(it.first, it.second)) }
+    return allPairs - pairs(testCase.users, testCase.paths, testCase.predicate)
+}
+
+private fun toArguments(usersAndPaths: Collection<UserAndPath>): List<Arguments> {
+    val arguments = mutableListOf<Arguments>()
+    usersAndPaths.forEach { arguments.add(Arguments.of(it.first, it.second)) }
 
     Assumptions.assumeFalse(arguments.isEmpty(), "No arguments")
 
     return arguments.toList()
 }
 
-fun pairs(users: List<User>, paths: List<String>): List<Pair<User, String>> {
-    val results = mutableListOf<Pair<User, String>>()
+private fun pairs(
+    users: List<User>,
+    paths: List<String>,
+    predicate: (user: User, path: String) -> Boolean
+) = pairs(users, paths)
+    .filter { predicate(it.first, it.second) }
+
+private fun pairs(users: List<User>, paths: List<String>): List<UserAndPath> {
+    val results = mutableListOf<UserAndPath>()
     for (user in users) {
         for (path in paths) {
-            results.add(Pair(user, path))
+            results.add(UserAndPath(user, path))
         }
     }
     return results.toList()

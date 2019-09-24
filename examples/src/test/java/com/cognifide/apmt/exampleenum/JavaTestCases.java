@@ -36,6 +36,6 @@ public enum JavaTestCases implements TestCase {
     @NotNull
     @Override
     public TestCaseConfiguration toTestCaseConfiguration() {
-        return new TestCaseConfiguration(Lists.newArrayList(JavaUsers.values()), users, paths);
+        return new TestCaseConfiguration(users, paths, Lists.newArrayList(JavaUsers.values()));
     }
 }
