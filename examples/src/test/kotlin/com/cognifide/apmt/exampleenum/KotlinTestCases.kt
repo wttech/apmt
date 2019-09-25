@@ -11,7 +11,7 @@ enum class KotlinTestCases(private val initConfig: TestCaseConfiguration.() -> U
             "/content/dam/we-retail-screens",
             "/content/dam/we-retail"
         )
-        users(
+        allowedUsers(
             KotlinUsers.AUTHOR,
             KotlinUsers.SUPER_AUTHOR
         )
@@ -21,13 +21,15 @@ enum class KotlinTestCases(private val initConfig: TestCaseConfiguration.() -> U
             "/content/dam/we-retail-screens",
             "/content/dam/we-retail"
         )
-        users(
+        allowedUsers(
             KotlinUsers.AUTHOR,
             KotlinUsers.SUPER_AUTHOR
         )
     });
 
     override fun toTestCaseConfiguration(): TestCaseConfiguration {
-        return TestCaseConfiguration(KotlinUsers.values().toMutableList()).apply(initConfig)
+        val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
+        testCaseConfiguration.allUsers(KotlinUsers.values())
+        return testCaseConfiguration
     }
 }

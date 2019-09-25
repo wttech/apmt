@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -36,6 +37,6 @@ public enum JavaTestCases implements TestCase {
     @NotNull
     @Override
     public TestCaseConfiguration toTestCaseConfiguration() {
-        return new TestCaseConfiguration(users, paths, Lists.newArrayList(JavaUsers.values()));
+        return new TestCaseConfiguration(users, Collections.emptyList(), paths, Lists.newArrayList(JavaUsers.values()));
     }
 }

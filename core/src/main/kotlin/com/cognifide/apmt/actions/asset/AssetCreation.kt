@@ -12,7 +12,7 @@ class AssetCreation(
     private val path: String
 ) : Action {
 
-    override fun execute(): Response? {
+    override fun execute(): Response {
         return ActionContext.basicRequestSpec(user, instance)
             .formParam("jcr:primaryType", "sling:OrderedFolder")
             .formParam("jcr:content/jcr:primaryType", "nt:unstructured")

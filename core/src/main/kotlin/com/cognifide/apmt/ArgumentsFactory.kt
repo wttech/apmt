@@ -3,28 +3,58 @@ package com.cognifide.apmt
 import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.params.provider.Arguments
 
-typealias UserAndPath = Pair<User, String>
 
-fun createArguments(testCases: List<TestCaseConfiguration>): List<Arguments> {
-    return toArguments(testCases.flatMap { createArguments(it) }.toSet())
+fun createAllowed(testCases: List<TestCaseConfiguration>): List<Arguments> {
+    return toArguments(testCases.flatMap { createAllowed(it) }.distinctBy { it.user.username + it.path }.sorted())
 }
 
-fun createArguments(testCase: TestCaseConfiguration): List<UserAndPath> {
-    return pairs(testCase.users, testCase.paths, testCase.predicate)
+fun createDenied(testCases: List<TestCaseConfiguration>): List<Arguments> {
+    return toArguments(testCases.flatMap { createDenied(it) }.distinctBy { it.user.username + it.path }.sorted())
 }
 
-fun createInvertedArguments(testCases: List<TestCaseConfiguration>): List<Arguments> {
-    return toArguments(testCases.flatMap { createInvertedArguments(it) }.toSet())
+private fun createAllowed(testCase: TestCaseConfiguration): List<UserAndPath> {
+    return createArguments(
+        testCase.paths,
+        testCase.allowedUsers,
+        testCase.deniedUsers,
+        testCase.allUsers,
+        testCase.allowedPairsPredicate,
+        testCase.deniedPairsPredicate
+    )
 }
 
-fun createInvertedArguments(testCase: TestCaseConfiguration): List<UserAndPath> {
-    val allPairs = pairs(testCase.allUsers, testCase.paths)
-    return allPairs - pairs(testCase.users, testCase.paths, testCase.predicate)
+private fun createDenied(testCase: TestCaseConfiguration): List<UserAndPath> {
+    return createArguments(
+        testCase.paths,
+        testCase.deniedUsers,
+        testCase.allowedUsers,
+        testCase.allUsers,
+        testCase.deniedPairsPredicate,
+        testCase.allowedPairsPredicate
+    )
+}
+
+private fun createArguments(
+    paths: List<String>,
+    users: List<User>,
+    opposedUsers: List<User>,
+    allUsers: List<User>,
+    predicate: ((user: User, path: String) -> Boolean)?,
+    opposedPredicate: ((user: User, path: String) -> Boolean)?
+): List<UserAndPath> {
+    return when {
+        users.isNotEmpty() -> pairs(users, paths, predicate)
+        opposedUsers.isNotEmpty() && allUsers.isNotEmpty() -> {
+            val allPairs = pairs(allUsers, paths)
+            allPairs - pairs(opposedUsers, paths, opposedPredicate)
+        }
+        else -> listOf()
+    }
 }
 
 private fun toArguments(usersAndPaths: Collection<UserAndPath>): List<Arguments> {
     val arguments = mutableListOf<Arguments>()
-    usersAndPaths.forEach { arguments.add(Arguments.of(it.first, it.second)) }
+    usersAndPaths.forEach { arguments.add(Arguments.of(it.user, it.path)) }
 
     Assumptions.assumeFalse(arguments.isEmpty(), "No arguments")
 
@@ -34,9 +64,14 @@ private fun toArguments(usersAndPaths: Collection<UserAndPath>): List<Arguments>
 private fun pairs(
     users: List<User>,
     paths: List<String>,
-    predicate: (user: User, path: String) -> Boolean
-) = pairs(users, paths)
-    .filter { predicate(it.first, it.second) }
+    predicate: ((user: User, path: String) -> Boolean)?
+): List<UserAndPath> {
+    val pairs = pairs(users, paths)
+    if (predicate != null) {
+        return pairs.filter { predicate(it.user, it.path) }
+    }
+    return pairs
+}
 
 private fun pairs(users: List<User>, paths: List<String>): List<UserAndPath> {
     val results = mutableListOf<UserAndPath>()
@@ -46,4 +81,11 @@ private fun pairs(users: List<User>, paths: List<String>): List<UserAndPath> {
         }
     }
     return results.toList()
+}
+
+data class UserAndPath(val user: User, val path: String) : Comparable<UserAndPath> {
+
+    override fun compareTo(other: UserAndPath): Int {
+        return this.user.username.compareTo(other.user.username)
+    }
 }

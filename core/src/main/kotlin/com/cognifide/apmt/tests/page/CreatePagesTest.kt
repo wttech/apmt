@@ -1,9 +1,9 @@
-package com.cognifide.apmt.tests.asset
+package com.cognifide.apmt.tests.page
 
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
-import com.cognifide.apmt.actions.asset.AssetCreation
+import com.cognifide.apmt.actions.page.PageCreation
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.ApmtBaseTest
 import org.junit.jupiter.api.AfterEach
@@ -13,32 +13,34 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Check user permissions to create asset")
-abstract class CreateAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+@DisplayName("Check user permissions to create pages")
+abstract class CreatePagesTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
-    private var undoAction: Action? = null
+    private var undoableAction: Action? = null
 
-    @DisplayName("User can create assets")
+    @DisplayName("User can create pages")
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(ALLOWED)
-    fun userCanCreateAssets(user: User, path: String) {
-        undoAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+    fun userCanCreatePages(user: User, path: String) {
+        undoableAction = PageCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction?.undo()
 
-        AssetCreation(authorInstance, user, path)
+        PageCreation(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
             .statusCode(201)
     }
 
-    @DisplayName("User cannot create assets")
+    @DisplayName("User cannot create pages")
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(DENIED)
-    fun userCannotCreateAssets(user: User, path: String) {
-        undoAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+    fun userCannotCreatePages(user: User, path: String) {
+        undoableAction = PageCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction?.undo()
 
-        AssetCreation(authorInstance, user, path)
+        PageCreation(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
@@ -46,7 +48,8 @@ abstract class CreateAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*test
     }
 
     @AfterEach
-    fun cleanUp() {
-        undoAction?.undo()
+    fun cleanup() {
+        undoableAction?.undo()
     }
 }
+

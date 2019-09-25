@@ -28,7 +28,7 @@ class AssetEdition(
         return assetCreationAction.execute()
     }
 
-    override fun execute(): Response? {
+    override fun execute(): Response {
         return ActionContext.basicRequestSpec(user, instance)
             .formParam("jcr:title", "Some Title")
             .`when`()
