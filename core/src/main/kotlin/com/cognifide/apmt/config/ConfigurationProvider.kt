@@ -1,6 +1,5 @@
 package com.cognifide.apmt.config
 
-import com.cognifide.apmt.Group
 import com.cognifide.apmt.User
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -31,7 +30,6 @@ object ConfigurationProvider {
 
     private class AdminUser(
         override val username: String,
-        override val password: String,
-        override val groups: List<Group> = listOf()
+        override val password: String
     ) : User
 }
