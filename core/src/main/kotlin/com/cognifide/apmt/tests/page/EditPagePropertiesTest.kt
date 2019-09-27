@@ -3,8 +3,8 @@ package com.cognifide.apmt.tests.page
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
-import com.cognifide.apmt.actions.page.PageCreation
-import com.cognifide.apmt.actions.page.PagePropertiesEdition
+import com.cognifide.apmt.actions.page.CreatePage
+import com.cognifide.apmt.actions.page.EditPageProperties
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.ApmtBaseTest
 import org.junit.jupiter.api.AfterEach
@@ -24,10 +24,10 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(ALLOWED)
     fun userCanEditPageProperties(user: User, path: String) {
-        undoableAction = PageCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()
 
-        PagePropertiesEdition(authorInstance, user, "$path/jcr:content")
+        EditPageProperties(authorInstance, user, "$path/jcr:content")
             .execute()
             .then()
             .assertThat()
@@ -38,10 +38,10 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(DENIED)
     fun userCannotEditPageProperties(user: User, path: String) {
-        undoableAction = PageCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()
 
-        PagePropertiesEdition(authorInstance, user, "$path/jcr:content")
+        EditPageProperties(authorInstance, user, "$path/jcr:content")
             .execute()
             .then()
             .assertThat()

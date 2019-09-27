@@ -6,7 +6,7 @@ import com.cognifide.apmt.actions.ActionContext
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
 
-class PagePropertiesEdition(
+class EditPageProperties(
     private val instance: Instance,
     private val user: User,
     private val path: String

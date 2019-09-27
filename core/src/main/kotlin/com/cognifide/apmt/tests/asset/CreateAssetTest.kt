@@ -3,7 +3,7 @@ package com.cognifide.apmt.tests.asset
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
-import com.cognifide.apmt.actions.asset.AssetCreation
+import com.cognifide.apmt.actions.asset.CreateAsset
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.ApmtBaseTest
 import org.junit.jupiter.api.AfterEach
@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to create asset")
-abstract class CreateAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
     private var undoAction: Action? = null
@@ -23,9 +23,9 @@ abstract class CreateAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*test
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(ALLOWED)
     fun userCanCreateAssets(user: User, path: String) {
-        undoAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
 
-        AssetCreation(authorInstance, user, path)
+        CreateAsset(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
@@ -36,9 +36,9 @@ abstract class CreateAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*test
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(DENIED)
     fun userCannotCreateAssets(user: User, path: String) {
-        undoAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
 
-        AssetCreation(authorInstance, user, path)
+        CreateAsset(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()

@@ -3,8 +3,8 @@ package com.cognifide.apmt.tests.asset
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
-import com.cognifide.apmt.actions.asset.AssetCreation
-import com.cognifide.apmt.actions.asset.AssetRemoval
+import com.cognifide.apmt.actions.asset.CreateAsset
+import com.cognifide.apmt.actions.asset.RemoveAsset
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.ApmtBaseTest
 import org.junit.jupiter.api.AfterEach
@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to remove asset")
-abstract class RemoveAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
     private var undoableAction: Action? = null
@@ -24,10 +24,10 @@ abstract class RemoveAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*test
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(ALLOWED)
     fun userCanDeleteAssets(user: User, path: String) {
-        undoableAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()
 
-        AssetRemoval(authorInstance, user, path)
+        RemoveAsset(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
@@ -38,10 +38,10 @@ abstract class RemoveAssetsTest(vararg testCases: TestCase) : ApmtBaseTest(*test
     @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
     @MethodSource(DENIED)
     fun userCannotDeleteAssets(user: User, path: String) {
-        undoableAction = AssetCreation(authorInstance, ConfigurationProvider.adminUser, path)
+        undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()
 
-        AssetRemoval(authorInstance, user, path)
+        RemoveAsset(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()

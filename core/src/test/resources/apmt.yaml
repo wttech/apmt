@@ -6,7 +6,7 @@ admin:
 instances:
   author:
     name: author@local
-    url: http://vagrant:4502
+    url: http://localhost:8080
   publish:
     name: publish@local
-    url: https://publish-ey.cognifidecloud.net
+    url: https://localhost:8080
