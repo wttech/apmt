@@ -12,6 +12,7 @@ import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to edit pages")
@@ -21,6 +22,7 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     private var undoableAction: Action? = null
 
     @DisplayName("User can edit pages")
+    @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
         undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
@@ -34,6 +36,7 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     }
 
     @DisplayName("User cannot edit pages")
+    @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
         undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)

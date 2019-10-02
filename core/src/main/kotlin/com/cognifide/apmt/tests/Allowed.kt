@@ -6,6 +6,6 @@ import org.junit.jupiter.params.provider.MethodSource
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-@ParameterizedTest(name = "{index} => User: {0} Path: {1}")
+@ParameterizedTest
 @MethodSource(ALLOWED)
 annotation class Allowed

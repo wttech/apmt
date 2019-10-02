@@ -12,6 +12,7 @@ import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to remove asset")
@@ -21,6 +22,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     private var undoableAction: Action? = null
 
     @DisplayName("User can remove asset")
+    @ParameterizedTest
     @Allowed
     fun userCanDeleteAssets(user: User, path: String) {
         undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
@@ -34,6 +36,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     }
 
     @DisplayName("User can not remove asset")
+    @ParameterizedTest
     @Denied
     fun userCannotDeleteAssets(user: User, path: String) {
         undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)

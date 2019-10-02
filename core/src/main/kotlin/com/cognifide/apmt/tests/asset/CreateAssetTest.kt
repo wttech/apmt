@@ -11,6 +11,7 @@ import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to create asset")
@@ -20,6 +21,7 @@ abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     private var undoAction: Action? = null
 
     @DisplayName("User can create assets")
+    @ParameterizedTest
     @Allowed
     fun userCanCreateAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
@@ -32,6 +34,7 @@ abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     }
 
     @DisplayName("User cannot create assets")
+    @ParameterizedTest
     @Denied
     fun userCannotCreateAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
