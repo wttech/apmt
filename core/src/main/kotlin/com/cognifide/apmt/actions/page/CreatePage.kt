@@ -44,12 +44,7 @@ class CreatePage(
     companion object {
         private val DEFAULT_PARAMS = mapOf(
             "jcr:primaryType" to "cq:Page",
-            "jcr:content/jcr:primaryType" to "cq:PageContent",
-            "jcr:content/jcr:title" to "[APT] Test Page",
-            "jcr:content/sling:resourceType" to "ey-dff/zgExtension/renderers/eyPageRenderer",
-            "jcr:content/cq:template" to "/apps/zg/zenGarden/template/site/zenPage",
-            "jcr:content/template" to "/content/ey-sites/ey-com-demo/en_gl/templates/article-template",
-            "jcr:content/copy-block/text" to "Test Text"
+            "jcr:content/jcr:primaryType" to "cq:PageContent"
         )
     }
 }

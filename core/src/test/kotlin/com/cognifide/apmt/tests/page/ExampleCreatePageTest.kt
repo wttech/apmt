@@ -11,7 +11,14 @@ import org.junit.jupiter.api.BeforeEach
 
 @AemStub
 class ExampleCreatePageTest : CreatePageTest(
-    ExampleTestCases.ADD_PAGE
+    ExampleTestCases.ADD_PAGE,
+    pageContent = {
+        jcrTitle = "Example Page"
+        slingResourceType = "apmt/components/testPage"
+        cqTemplate = "apmt/templates/testPage"
+
+        properties("apmtType" to "apmtTestPage")
+    }
 ) {
 
     @BeforeEach
