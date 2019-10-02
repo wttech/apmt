@@ -6,12 +6,12 @@ import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.asset.CreateAsset
 import com.cognifide.apmt.actions.asset.RemoveAsset
 import com.cognifide.apmt.config.ConfigurationProvider
+import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
+import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to remove asset")
@@ -21,8 +21,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     private var undoableAction: Action? = null
 
     @DisplayName("User can remove asset")
-    @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
-    @MethodSource(ALLOWED)
+    @Allowed
     fun userCanDeleteAssets(user: User, path: String) {
         undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()
@@ -35,8 +34,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     }
 
     @DisplayName("User can not remove asset")
-    @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
-    @MethodSource(DENIED)
+    @Denied
     fun userCannotDeleteAssets(user: User, path: String) {
         undoableAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoableAction?.execute()

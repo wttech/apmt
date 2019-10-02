@@ -6,12 +6,12 @@ import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.asset.CreateAsset
 import com.cognifide.apmt.actions.asset.EditAsset
 import com.cognifide.apmt.config.ConfigurationProvider
+import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
+import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to edit asset")
@@ -21,8 +21,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     private var undoAction: Action? = null
 
     @DisplayName("User can edit assets")
-    @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
-    @MethodSource(ALLOWED)
+    @Allowed
     fun userCanEditAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoAction?.prepare()
@@ -35,8 +34,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     }
 
     @DisplayName("User cannot edit assets")
-    @ParameterizedTest(name = "{index} => User: {0} Path: {1}")
-    @MethodSource(DENIED)
+    @Denied
     fun userCannotEditAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
         undoAction?.prepare()
