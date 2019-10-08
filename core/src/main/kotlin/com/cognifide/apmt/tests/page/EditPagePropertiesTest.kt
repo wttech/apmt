@@ -10,6 +10,7 @@ import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
 import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -19,14 +20,14 @@ import org.junit.jupiter.params.ParameterizedTest
 abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
-    private var undoableAction: Action? = null
+    private var undoAction: Action? = null
 
     @DisplayName("User can edit page properties")
     @ParameterizedTest
     @Allowed
     fun userCanEditPageProperties(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.execute()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.execute()
 
         EditPageProperties(authorInstance, user, "$path/jcr:content")
             .execute()
@@ -39,8 +40,8 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
     @ParameterizedTest
     @Denied
     fun userCannotEditPageProperties(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.execute()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.execute()
 
         EditPageProperties(authorInstance, user, "$path/jcr:content")
             .execute()
@@ -49,8 +50,13 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
             .statusCode(500)
     }
 
+    @BeforeEach
+    fun init() {
+        undoAction = null
+    }
+
     @AfterEach
     fun cleanup() {
-        undoableAction?.undo()
+        undoAction?.undo()
     }
 }

@@ -9,6 +9,7 @@ import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
 import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -44,6 +45,11 @@ abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
             .then()
             .assertThat()
             .statusCode(500)
+    }
+
+    @BeforeEach
+    fun init() {
+        undoAction = null
     }
 
     @AfterEach

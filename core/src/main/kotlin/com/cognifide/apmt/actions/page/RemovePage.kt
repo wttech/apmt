@@ -1,4 +1,4 @@
-package com.cognifide.apmt.actions.asset
+package com.cognifide.apmt.actions.page
 
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
@@ -6,19 +6,20 @@ import com.cognifide.apmt.actions.ActionContext
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
 
-class EditAsset(
+class RemovePage(
     private val instance: Instance,
     private val user: User,
     private val path: String
 ) : Action {
 
     override fun execute(): Response {
+        val url = instance.url + path
         return ActionContext.basicRequestSpec(user, instance)
-            .formParam("jcr:title", "Some Title")
+            .given()
             .`when`()
-            .post(instance.url + path)
+            .delete(url)
     }
 
-    override fun successCode(): Int = 200
-    override fun failureCode(): Int = 500
+    override fun successCode(): Int = 204
+    override fun failureCode(): Int = 403
 }

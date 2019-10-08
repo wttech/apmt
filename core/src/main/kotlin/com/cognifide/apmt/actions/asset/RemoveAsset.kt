@@ -12,7 +12,6 @@ class RemoveAsset(
     private val path: String
 ) : Action {
 
-
     override fun execute(): Response {
         return ActionContext.basicRequestSpec(user, instance)
             .delete(instance.url + path)

@@ -10,6 +10,7 @@ import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
 import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -19,16 +20,16 @@ import org.junit.jupiter.params.ParameterizedTest
 abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
-    private var undoableAction: Action? = null
+    private var undoAction: Action? = null
 
     @DisplayName("User can edit pages")
     @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.execute()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.execute()
 
-        EditPage(authorInstance, user, "$path/jcr:content")
+        EditPage(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
@@ -39,18 +40,23 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.execute()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.execute()
 
-        EditPage(authorInstance, user, "$path/jcr:content")
+        EditPage(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
             .statusCode(500)
     }
 
+    @BeforeEach
+    fun init() {
+        undoAction = null
+    }
+
     @AfterEach
     fun cleanup() {
-        undoableAction?.undo()
+        undoAction?.undo()
     }
 }

@@ -21,7 +21,7 @@ class EditPage(
     }
 
     override fun execute(): Response {
-        val url = instance.url + path
+        val url = instance.url + path + "/jcr:content"
         return ActionContext.basicRequestSpec(user, instance)
             .given()
             .formParams(pageParams)

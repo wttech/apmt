@@ -10,6 +10,7 @@ import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
 import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -22,14 +23,14 @@ abstract class CreatePageTest(
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
-    private var undoableAction: Action? = null
+    private var undoAction: Action? = null
 
     @DisplayName("User can create pages")
     @ParameterizedTest
     @Allowed
     fun userCanCreatePages(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.undo()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.undo()
 
         CreatePage(authorInstance, user, path, toPageProperties(pageContent))
             .execute()
@@ -42,8 +43,8 @@ abstract class CreatePageTest(
     @ParameterizedTest
     @Denied
     fun userCannotCreatePages(user: User, path: String) {
-        undoableAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoableAction?.undo()
+        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        undoAction?.undo()
 
         CreatePage(authorInstance, user, path, toPageProperties(pageContent))
             .execute()
@@ -60,9 +61,14 @@ abstract class CreatePageTest(
         return content.toPageProperties()
     }
 
+    @BeforeEach
+    fun init() {
+        undoAction = null
+    }
+
     @AfterEach
     fun cleanup() {
-        undoableAction?.undo()
+        undoAction?.undo()
     }
 }
 
