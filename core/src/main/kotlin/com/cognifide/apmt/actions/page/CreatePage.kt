@@ -32,7 +32,7 @@ class CreatePage(
 
     override fun undo(): Response {
         val url = instance.url + path
-        return return ActionContext.basicRequestSpec(user, instance)
+        return ActionContext.basicRequestSpec(user, instance)
             .given()
             .`when`()
             .delete(url)
