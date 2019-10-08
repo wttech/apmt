@@ -63,7 +63,15 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             ExampleUsers.AUTHOR,
             ExampleUsers.SUPER_AUTHOR
         )
-    });
+    }),
+    OPEN_PAGE({
+        paths(
+            "/content/my-site/en_gl/home"
+        )
+        allowedUsers(
+            *ExampleUsers.values()
+        )
+    }), ;
 
     override fun toTestCaseConfiguration(): TestCaseConfiguration {
         val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)

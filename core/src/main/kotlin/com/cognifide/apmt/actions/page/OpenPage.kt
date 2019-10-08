@@ -17,6 +17,7 @@ class OpenPage(
     override fun execute(): Response {
         val url = instance.url + path
         val specification = RestAssured.given()
+            .headers(instance.headers)
             .relaxedHTTPSValidation()
         if (user != null) {
             specification.spec(ActionContext.basicRequestSpec(user, instance))
