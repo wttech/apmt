@@ -3,6 +3,7 @@ package com.cognifide.apmt.actions.page
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.ActionContext
+import com.cognifide.apmt.common.PageContent
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
 
@@ -10,14 +11,18 @@ class CreatePage(
     private val instance: Instance,
     private val user: User,
     private val path: String,
-    pageParams: Map<String, String> = mapOf()
+    pageContent: (PageContent.() -> Unit)? = null
 ) : Action {
 
     private val pageParams: MutableMap<String, String> = mutableMapOf()
 
     init {
+        val newPageContent = PageContent()
+        if (pageContent != null) {
+            newPageContent.apply(pageContent)
+        }
         this.pageParams.putAll(DEFAULT_PARAMS)
-        this.pageParams.putAll(pageParams)
+        this.pageParams.putAll(newPageContent.toMap())
     }
 
     override fun execute(): Response {

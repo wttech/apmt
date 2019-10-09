@@ -1,4 +1,4 @@
-package com.cognifide.apmt.actions.common
+package com.cognifide.apmt.actions.resource
 
 import com.cognifide.apmt.MOCK_SERVER
 import com.cognifide.apmt.TEST_USER

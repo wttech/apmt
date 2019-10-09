@@ -17,7 +17,7 @@ class ExampleCreatePageTest : CreatePageTest(
         slingResourceType = "apmt/components/testPage"
         cqTemplate = "apmt/templates/testPage"
 
-        properties("apmtType" to "apmtTestPage")
+        "apmtType" set "apmtTestPage"
     }
 ) {
 

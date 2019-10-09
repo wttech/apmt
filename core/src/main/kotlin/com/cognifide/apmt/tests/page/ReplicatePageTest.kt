@@ -12,8 +12,10 @@ import com.cognifide.apmt.tests.Denied
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to replicate pages")
 abstract class ReplicatePageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
 
@@ -32,12 +34,14 @@ abstract class ReplicatePageTest(vararg testCases: TestCase) : ApmtBaseTest(*tes
         pageReplicationAction
             .execute()
             .then()
-            .assertThat().statusCode(200)
+            .assertThat()
+            .statusCode(200)
 
         pageReplicationAction
             .undo()
             .then()
-            .assertThat().statusCode(200)
+            .assertThat()
+            .statusCode(200)
     }
 
     @DisplayName("User cannot replicate pages")

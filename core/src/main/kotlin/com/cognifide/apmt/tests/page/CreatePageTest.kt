@@ -19,7 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to create pages")
 abstract class CreatePageTest(
     vararg testCases: TestCase,
-    private var pageContent: (PageContent.() -> Unit)? = null
+    private val pageContent: (PageContent.() -> Unit)? = null
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
@@ -32,7 +32,7 @@ abstract class CreatePageTest(
         undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
         undoAction?.undo()
 
-        CreatePage(authorInstance, user, path, toPageProperties(pageContent))
+        CreatePage(authorInstance, user, path, pageContent)
             .execute()
             .then()
             .assertThat()
@@ -46,19 +46,11 @@ abstract class CreatePageTest(
         undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
         undoAction?.undo()
 
-        CreatePage(authorInstance, user, path, toPageProperties(pageContent))
+        CreatePage(authorInstance, user, path, pageContent)
             .execute()
             .then()
             .assertThat()
             .statusCode(500)
-    }
-
-    private fun toPageProperties(function: (PageContent.() -> Unit)?): Map<String, String> {
-        val content = PageContent()
-        if (function != null) {
-            content.apply(function)
-        }
-        return content.toPageProperties()
     }
 
     @BeforeEach

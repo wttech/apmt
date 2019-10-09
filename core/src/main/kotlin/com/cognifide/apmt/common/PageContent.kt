@@ -11,7 +11,11 @@ class PageContent(
         properties.putAll(pairs)
     }
 
-    internal fun toPageProperties(): Map<String, String> {
+    infix fun String.set(value: String) {
+        properties[this] = value
+    }
+
+    internal fun toMap(): Map<String, String> {
         val pageProperties = mutableMapOf<String, String>()
         pageProperties["jcr:content/jcr:title"] = jcrTitle
         pageProperties["jcr:content/sling:resourceType"] = slingResourceType
