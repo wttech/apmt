@@ -1,42 +1,31 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-plugins {
-    kotlin("jvm") version "1.3.31" apply false
-}
+import pl.allegro.tech.build.axion.release.domain.TagNameSerializationConfig
 
 description = "AEM Permisson Matrix Tester"
 
-subprojects {
-    repositories {
-        mavenCentral()
-    }
+plugins {
+    id("pl.allegro.tech.build.axion-release") version "1.10.2"
+    kotlin("jvm") version "1.3.31" apply false
+    `maven-publish`
+    signing
+}
 
-    plugins.withId("kotlin") {
-        tasks.named<Test>("test") {
-            useJUnitPlatform()
-            testLogging {
-                events = setOf(
-                    TestLogEvent.STANDARD_OUT,
-                    TestLogEvent.STANDARD_ERROR,
-                    TestLogEvent.FAILED,
-                    TestLogEvent.PASSED,
-                    TestLogEvent.SKIPPED
-                )
-            }
-        }
+scmVersion {
+    useHighestVersion = true
+    ignoreUncommittedChanges = false
+    tag(closureOf<TagNameSerializationConfig> {
+        prefix = "apmt"
+    })
+}
 
-        tasks.withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = "1.8"
-        }
+project.version = scmVersion.version
 
-        dependencies {
-            "implementation"(kotlin("stdlib-jdk8"))
-            "implementation"("org.junit.jupiter:junit-jupiter-api:5.5.1")
-            "implementation"("org.junit.jupiter:junit-jupiter-params:5.5.1")
-            "testRuntime"("org.junit.jupiter:junit-jupiter-engine:5.5.1")
+allprojects {
+    group = "com.cognifide.apmt"
 
-            "implementation"("org.apache.commons:commons-lang3:3.8.1")
-        }
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
+
+apply(from = "gradle/common.gradle.kts")
