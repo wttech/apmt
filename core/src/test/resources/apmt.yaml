@@ -1,0 +1,18 @@
+# Instance configuration
+---
+admin:
+  username: admin
+  password: admin
+instances:
+  author:
+    name: author@local
+    url: http://localhost:8080
+    headers:
+      apmt-header1: apmt-value1
+      apmt-header2: apmt-value2
+  publish:
+    name: publish@local
+    url: http://localhost:8080
+    headers:
+      apmt-header1: apmt-value1
+      apmt-header2: apmt-value2

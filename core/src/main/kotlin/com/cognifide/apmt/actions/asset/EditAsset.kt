@@ -1,4 +1,4 @@
-package com.cognifide.apmt.actions.common
+package com.cognifide.apmt.actions.asset
 
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
@@ -6,21 +6,19 @@ import com.cognifide.apmt.actions.ActionContext
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
 
-class ReadResource(
-    val instance: Instance,
-    val user: User,
-    val path: String
+class EditAsset(
+    private val instance: Instance,
+    private val user: User,
+    private val path: String
 ) : Action {
-    override fun prepare(): Response? = null
 
-    override fun execute(): Response? {
+    override fun execute(): Response {
         return ActionContext.basicRequestSpec(user, instance)
+            .formParam("jcr:title", "Some Title")
             .`when`()
-            .get(instance.url + path + ".json")
+            .post(instance.url + path)
     }
 
-    override fun undo(): Response? = null
-
     override fun successCode(): Int = 200
-    override fun failureCode(): Int = 404
+    override fun failureCode(): Int = 500
 }

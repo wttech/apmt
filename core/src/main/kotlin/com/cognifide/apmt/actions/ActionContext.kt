@@ -11,6 +11,7 @@ object ActionContext {
     fun basicRequestSpec(user: User, instance: Instance): RequestSpecification {
         return RestAssured
             .given()
+            .headers(instance.headers)
             .header(CSRF_TOKEN, obtainCsrfToken(user, instance))
             .auth().preemptive().basic(user.username, user.password)
     }
@@ -18,6 +19,7 @@ object ActionContext {
     private fun obtainCsrfToken(user: User, instance: Instance): String {
         return RestAssured
             .given()
+            .headers(instance.headers)
             .auth().preemptive().basic(user.username, user.password)
             .`when`()
             .get(instance.url + CSRF_ENDPOINT)

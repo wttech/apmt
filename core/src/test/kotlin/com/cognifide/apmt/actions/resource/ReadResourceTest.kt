@@ -1,8 +1,9 @@
-package com.cognifide.apmt.actions.common
+package com.cognifide.apmt.actions.resource
 
 import com.cognifide.apmt.MOCK_SERVER
 import com.cognifide.apmt.TEST_USER
 import com.cognifide.apmt.util.AemStub
+import com.cognifide.apmt.util.AemStubExtension.Companion.registerUsers
 import com.cognifide.apmt.util.HumanReadableCamelCase
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,6 +26,8 @@ class ReadResourceTest {
     @Test
     @AemStub
     fun callingExecutePerformsGet() {
+        registerUsers(TEST_USER)
+
         stubFor(
             get(urlPathEqualTo("/readResource"))
                 .willReturn(ok())

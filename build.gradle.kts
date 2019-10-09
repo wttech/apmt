@@ -32,8 +32,9 @@ subprojects {
 
         dependencies {
             "implementation"(kotlin("stdlib-jdk8"))
-            "implementation"("org.junit.jupiter:junit-jupiter-api:5.4.2")
-            "testRuntime"("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+            "implementation"("org.junit.jupiter:junit-jupiter-api:5.5.1")
+            "implementation"("org.junit.jupiter:junit-jupiter-params:5.5.1")
+            "testRuntime"("org.junit.jupiter:junit-jupiter-engine:5.5.1")
 
             "implementation"("org.apache.commons:commons-lang3:3.8.1")
         }
