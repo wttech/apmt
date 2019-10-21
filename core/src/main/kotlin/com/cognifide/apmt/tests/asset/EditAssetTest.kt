@@ -27,7 +27,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     @Allowed
     fun userCanEditAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
-        undoAction?.prepare()
+        undoAction?.execute()
 
         EditAsset(authorInstance, user, path)
             .execute()
@@ -41,7 +41,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     @Denied
     fun userCannotEditAssets(user: User, path: String) {
         undoAction = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
-        undoAction?.prepare()
+        undoAction?.execute()
 
         EditAsset(authorInstance, user, path)
             .execute()
