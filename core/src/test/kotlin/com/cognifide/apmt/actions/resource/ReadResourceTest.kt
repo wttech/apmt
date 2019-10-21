@@ -19,11 +19,6 @@ class ReadResourceTest {
     private val readResource = ReadResource(MOCK_SERVER, TEST_USER, "/readResource")
 
     @Test
-    fun callingPrepareDoesNothing() {
-        assertNull(readResource.prepare())
-    }
-
-    @Test
     @AemStub
     fun callingExecutePerformsGet() {
         registerUsers(TEST_USER)
