@@ -9,8 +9,6 @@ import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
 import com.cognifide.apmt.tests.Denied
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -26,8 +24,9 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
-        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoAction?.execute()
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        createPage.execute()
+        addUndoAction(createPage)
 
         EditPage(authorInstance, user, path)
             .execute()
@@ -40,23 +39,14 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
-        undoAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        undoAction?.execute()
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        createPage.execute()
+        addUndoAction(createPage)
 
         EditPage(authorInstance, user, path)
             .execute()
             .then()
             .assertThat()
             .statusCode(500)
-    }
-
-    @BeforeEach
-    fun init() {
-        undoAction = null
-    }
-
-    @AfterEach
-    fun cleanup() {
-        undoAction?.undo()
     }
 }
