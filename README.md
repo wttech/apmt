@@ -59,25 +59,27 @@ enum class TestCases(private val initConfig: TestCaseConfiguration.() -> Unit) :
 
     CREATE_PAGE({
         paths(
-            "/content/my-site/en_gl/home"
+            "/content/my-site/en_us/home",
+            "/content/my-site/de_de/home"
         )
         allowedUsers(
-            ExampleUsers.AUTHOR,
-            ExampleUsers.SUPER_AUTHOR
+            Users.AUTHOR,
+            Users.SUPER_AUTHOR
         )
     }),
     OPEN_PAGE({
         paths(
-            "/content/my-site/en_gl/home"
+            "/content/my-site/en_us/home",
+            "/content/my-site/en_us/home"
         )
         allowedUsers(
-            *ExampleUsers.values()
+            *Users.values()
         )
     });
 
     override fun toTestCaseConfiguration(): TestCaseConfiguration {
         val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
-        testCaseConfiguration.allUsers(ExampleUsers.values())
+        testCaseConfiguration.allUsers(Users.values())
         return testCaseConfiguration
     }
 }
@@ -104,6 +106,73 @@ package com.cognifide.apmt.tests
 class OpenPageTest : com.cognifide.apmt.tests.page.OpenPageTest(
     TestCases.OPEN_PAGE
 )
+```
+## How does it work?
+Let's look at the `CREATE_TEST` case (it's a little bit modified).
+```kotlin
+CREATE_PAGE({
+    paths(
+        "/content/my-site/en_us/home",
+        "/content/my-site/de_de/home"
+    )
+    allowedUsers(
+        Users.AUTHOR,
+        Users.SUPER_AUTHOR
+    )
+    allUsers(
+        *Users.values()
+    )
+})
+```
+CreatePageTest will be executed for each pair of user and path, and users will be spllited for 2 groups:
+* Allowed users - users with access to create pages (explicitly defined in section `allowedUsers`),
+* Denied users - users without the access (users defined in `allUsers` without the users from `allowedUsers`). 
+
+For each group will be executed different test method.
+
+| Access | User | Path |
+| --- | :---: | :---: |
+| Denied | USER | /content/my-site/en_us/home |
+| Denied | USER | /content/my-site/de_de/home |
+| Allowed | AUTHOR | /content/my-site/en_us/home |
+| Allowed | AUTHOR | /content/my-site/de_de/home |
+| Allowed | SUPER_AUTHOR | /content/my-site/de_de/home |
+| Allowed | SUPER_AUTHOR | /content/my-site/de_de/home |
+
+You can use 3 sections to define users groups:
+* `allowedUsers` define users who can perform action
+* `deniedUsers` define users who can not perform action
+* `allUsers` used to compute not defined group
+```kotlin
+allowedUsers(
+    Users.AUTHOR,
+    Users.SUPER_AUTHOR
+)
+deniedUsers(
+    Users.USER
+)   
+allUsers(
+    *Users.values()
+)
+```
+
+Here is table which shows how sections are used to define final groups.  
+
+| `allowedUsers` | `deniedUsers` | `allUsers` | Allowed users | Denied users | 
+| --- | :---: | :---: | --- | --- |
+| definied | | | allowedUser | |
+| definied | | defined | allowedUser | allUsers - allowedUsers |
+| definied | defined | | allowedUser | deniedUsers |
+| | defined | | | deniedUsers|
+| | defined | defined | allUsers - deniedUsers | deniedUsers |
+
+You don't need to define `allUsers` explicitly in each test case. You may define all users in overridden method `toTestCaseConfiguration()`. 
+```kotlin
+override fun toTestCaseConfiguration(): TestCaseConfiguration {
+    val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
+    testCaseConfiguration.allUsers(Users.values())
+    return testCaseConfiguration
+}
 ```
 
 ## License
