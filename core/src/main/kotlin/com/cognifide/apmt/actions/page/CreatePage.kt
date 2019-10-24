@@ -3,6 +3,7 @@ package com.cognifide.apmt.actions.page
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.ActionContext
+import com.cognifide.apmt.common.Page
 import com.cognifide.apmt.common.PageContent
 import com.cognifide.apmt.config.Instance
 import io.restassured.response.Response
@@ -11,18 +12,13 @@ class CreatePage(
     private val instance: Instance,
     private val user: User,
     private val path: String,
-    pageContent: (PageContent.() -> Unit)? = null
+    pageContent: (PageContent.() -> Unit) = {}
 ) : Action {
 
-    private val pageParams: MutableMap<String, String> = mutableMapOf()
+    private val page = Page()
 
     init {
-        val newPageContent = PageContent()
-        if (pageContent != null) {
-            newPageContent.apply(pageContent)
-        }
-        this.pageParams.putAll(DEFAULT_PARAMS)
-        this.pageParams.putAll(newPageContent.toMap())
+        page.jcrContent(pageContent)
     }
 
     override fun execute(): Response {
@@ -30,7 +26,7 @@ class CreatePage(
         return ActionContext.basicRequestSpec(user, instance)
             .given()
             .contentType("application/x-www-form-urlencoded; charset=UTF-8")
-            .formParams(pageParams)
+            .formParams(page.toMap())
             .`when`()
             .post(url)
     }
@@ -45,11 +41,4 @@ class CreatePage(
 
     override fun successCode(): Int = 200
     override fun failureCode(): Int = 500
-
-    companion object {
-        private val DEFAULT_PARAMS = mapOf(
-            "jcr:primaryType" to "cq:Page",
-            "jcr:content/jcr:primaryType" to "cq:PageContent"
-        )
-    }
 }

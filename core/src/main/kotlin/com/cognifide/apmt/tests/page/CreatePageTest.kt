@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to create pages")
 abstract class CreatePageTest(
     vararg testCases: TestCase,
-    private val pageContent: (PageContent.() -> Unit)? = null
+    private val pageContent: (PageContent.() -> Unit)
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance

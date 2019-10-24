@@ -16,8 +16,13 @@ class ExampleCreatePageTest : CreatePageTest(
         jcrTitle = "Example Page"
         slingResourceType = "apmt/components/testPage"
         cqTemplate = "apmt/templates/testPage"
-
         "apmtType" set "apmtTestPage"
+
+        "text" {
+            jcrPrimaryType = "nt:unstructured"
+            slingResourceType = "apmt/components/testText"
+            "apmtType" set "apmtTestComponent"
+        }
     }
 ) {
 

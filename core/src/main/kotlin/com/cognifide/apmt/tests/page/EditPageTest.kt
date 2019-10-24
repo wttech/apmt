@@ -2,9 +2,9 @@ package com.cognifide.apmt.tests.page
 
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
-import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.page.CreatePage
 import com.cognifide.apmt.actions.page.EditPage
+import com.cognifide.apmt.common.PageContent
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
@@ -15,10 +15,12 @@ import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to edit pages")
-abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+abstract class EditPageTest(
+    vararg testCases: TestCase,
+    private val pageContent: (PageContent.() -> Unit)
+) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
-    private var undoAction: Action? = null
 
     @DisplayName("User can edit pages")
     @ParameterizedTest
@@ -28,7 +30,7 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path)
+        EditPage(authorInstance, user, path, pageContent)
             .execute()
             .then()
             .assertThat()
@@ -43,7 +45,7 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path)
+        EditPage(authorInstance, user, path, pageContent)
             .execute()
             .then()
             .assertThat()

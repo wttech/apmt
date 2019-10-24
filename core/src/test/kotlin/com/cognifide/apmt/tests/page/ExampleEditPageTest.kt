@@ -10,7 +10,15 @@ import org.junit.jupiter.api.BeforeEach
 
 @AemStub
 class ExampleEditPageTest : EditPageTest(
-    ExampleTestCases.EDIT_PAGE
+    ExampleTestCases.EDIT_PAGE,
+    pageContent = {
+        jcrTitle = "[APMT] New Test Page"
+
+        "text" {
+            slingResourceType = "apmt/components/text"
+            "value" set "Hello World!"
+        }
+    }
 ) {
 
     @BeforeEach

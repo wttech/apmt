@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to create resources")
 abstract class CreateResourceTest(
     vararg testCases: TestCase,
-    private val resource: (Resource.() -> Unit)? = null
+    private val resource: (Resource.() -> Unit)
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
