@@ -3,7 +3,7 @@ package com.cognifide.apmt.tests
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.TestCaseConfiguration
 
-enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> Unit) : TestCase {
+enum class ApmtTestCases(private val initConfig: TestCaseConfiguration.() -> Unit) : TestCase {
 
     ADD_ASSET({
         paths(
@@ -11,8 +11,8 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/dam/my-product/images"
         )
         allowedUsers(
-            ExampleUsers.AUTHOR,
-            ExampleUsers.SUPER_AUTHOR
+            ApmtUsers.AUTHOR,
+            ApmtUsers.SUPER_AUTHOR
         )
     }),
     EDIT_ASSET({
@@ -21,8 +21,8 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/dam/my-product/images"
         )
         deniedUsers(
-            ExampleUsers.USER,
-            ExampleUsers.AUTHOR
+            ApmtUsers.USER,
+            ApmtUsers.AUTHOR
         )
     }),
     REMOVE_ASSET({
@@ -31,8 +31,8 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/dam/my-product/images"
         )
         deniedUsers(
-            ExampleUsers.USER,
-            ExampleUsers.AUTHOR
+            ApmtUsers.USER,
+            ApmtUsers.AUTHOR
         )
     }),
     ADD_PAGE({
@@ -40,8 +40,8 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/my-site/en_gl/home"
         )
         allowedUsers(
-            ExampleUsers.AUTHOR,
-            ExampleUsers.SUPER_AUTHOR
+            ApmtUsers.AUTHOR,
+            ApmtUsers.SUPER_AUTHOR
         )
     }),
     EDIT_PAGE({
@@ -49,9 +49,9 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/my-site/en_gl/home"
         )
         allowedUsers(
-            ExampleUsers.USER,
-            ExampleUsers.AUTHOR,
-            ExampleUsers.SUPER_AUTHOR
+            ApmtUsers.USER,
+            ApmtUsers.AUTHOR,
+            ApmtUsers.SUPER_AUTHOR
         )
     }),
     EDIT_PAGE_PROPERTIES({
@@ -59,9 +59,9 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/my-site/en_gl/home"
         )
         allowedUsers(
-            ExampleUsers.USER,
-            ExampleUsers.AUTHOR,
-            ExampleUsers.SUPER_AUTHOR
+            ApmtUsers.USER,
+            ApmtUsers.AUTHOR,
+            ApmtUsers.SUPER_AUTHOR
         )
     }),
     OPEN_PAGE({
@@ -69,13 +69,13 @@ enum class ExampleTestCases(private val initConfig: TestCaseConfiguration.() -> 
             "/content/my-site/en_gl/home"
         )
         allowedUsers(
-            *ExampleUsers.values()
+            *ApmtUsers.values()
         )
     }), ;
 
     override fun toTestCaseConfiguration(): TestCaseConfiguration {
         val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
-        testCaseConfiguration.allUsers(ExampleUsers.values())
+        testCaseConfiguration.allUsers(ApmtUsers.values())
         return testCaseConfiguration
     }
 }

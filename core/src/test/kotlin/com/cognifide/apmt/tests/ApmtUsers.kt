@@ -2,7 +2,7 @@ package com.cognifide.apmt.tests
 
 import com.cognifide.apmt.User
 
-enum class ExampleUsers(
+enum class ApmtUsers(
     override val username: String,
     override val password: String
 ) : User {

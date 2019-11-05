@@ -4,6 +4,7 @@ import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.page.CreatePage
 import com.cognifide.apmt.actions.page.RemovePage
+import com.cognifide.apmt.common.PageContent
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
@@ -14,7 +15,12 @@ import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to remove pages")
-abstract class RemovePageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+abstract class RemovePageTest(
+    vararg testCases: TestCase,
+    private val pageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] New Test Page"
+    }
+) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
 
@@ -22,7 +28,7 @@ abstract class RemovePageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCa
     @ParameterizedTest
     @Allowed
     fun userCanRemovePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, pageContent)
         createPage.execute()
         addUndoAction(createPage)
 
@@ -37,7 +43,7 @@ abstract class RemovePageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCa
     @ParameterizedTest
     @Denied
     fun userCannotRemovePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, pageContent)
         createPage.execute()
         addUndoAction(createPage)
 

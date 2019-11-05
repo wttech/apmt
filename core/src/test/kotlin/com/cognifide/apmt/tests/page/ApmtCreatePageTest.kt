@@ -1,8 +1,7 @@
 package com.cognifide.apmt.tests.page
 
 import com.cognifide.apmt.actions.CSRF_TOKEN
-import com.cognifide.apmt.tests.ExampleTestCases
-import com.cognifide.apmt.tests.ExampleUsers
+import com.cognifide.apmt.tests.*
 import com.cognifide.apmt.util.AemStub
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUser
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUsers
@@ -10,18 +9,17 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.BeforeEach
 
 @AemStub
-class ExampleCreatePageTest : CreatePageTest(
-    ExampleTestCases.ADD_PAGE,
+class ApmtCreatePageTest : CreatePageTest(
+    ApmtTestCases.ADD_PAGE,
     pageContent = {
-        jcrTitle = "Example Page"
-        slingResourceType = "apmt/components/testPage"
-        cqTemplate = "apmt/templates/testPage"
-        "apmtType" set "apmtTestPage"
+        jcrTitle = "[APMT] New Test Page"
+        slingResourceType = APMT_PAGE
+        cqTemplate = APMT_PAGE_TEMPLATE
 
         "text" {
             jcrPrimaryType = "nt:unstructured"
-            slingResourceType = "apmt/components/testText"
-            "apmtType" set "apmtTestComponent"
+            slingResourceType = APMT_TEXT
+            "value" set "Hello World!"
         }
     }
 ) {
@@ -29,7 +27,7 @@ class ExampleCreatePageTest : CreatePageTest(
     @BeforeEach
     fun beforeEach() {
         registerUser("admin", "admin")
-        registerUsers(*ExampleUsers.values())
+        registerUsers(*ApmtUsers.values())
 
         stubFor(
             post(urlPathMatching("/content/my-site/en_gl/home"))
@@ -37,7 +35,7 @@ class ExampleCreatePageTest : CreatePageTest(
         )
         stubFor(
             post(urlPathMatching("/content/my-site/en_gl/home"))
-                .withHeader(CSRF_TOKEN, equalTo(ExampleUsers.USER.username))
+                .withHeader(CSRF_TOKEN, equalTo(ApmtUsers.USER.username))
                 .willReturn(aResponse().withStatus(500))
         )
     }

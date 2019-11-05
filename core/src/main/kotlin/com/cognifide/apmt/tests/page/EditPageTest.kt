@@ -17,7 +17,12 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to edit pages")
 abstract class EditPageTest(
     vararg testCases: TestCase,
-    private val pageContent: (PageContent.() -> Unit)
+    private val createdPageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] New Test Page"
+    },
+    private val editedPageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] Edited Test Page"
+    }
 ) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
@@ -26,11 +31,11 @@ abstract class EditPageTest(
     @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path, pageContent)
+        EditPage(authorInstance, user, path, editedPageContent)
             .execute()
             .then()
             .assertThat()
@@ -41,11 +46,11 @@ abstract class EditPageTest(
     @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path, pageContent)
+        EditPage(authorInstance, user, path, editedPageContent)
             .execute()
             .then()
             .assertThat()

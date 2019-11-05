@@ -1,8 +1,8 @@
 package com.cognifide.apmt.tests.asset
 
 import com.cognifide.apmt.actions.CSRF_TOKEN
-import com.cognifide.apmt.tests.ExampleTestCases
-import com.cognifide.apmt.tests.ExampleUsers
+import com.cognifide.apmt.tests.ApmtTestCases
+import com.cognifide.apmt.tests.ApmtUsers
 import com.cognifide.apmt.util.AemStub
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUser
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUsers
@@ -11,13 +11,13 @@ import org.junit.jupiter.api.BeforeEach
 
 @AemStub
 class ExampleRemoveAssetTest : RemoveAssetTest(
-    ExampleTestCases.REMOVE_ASSET
+    ApmtTestCases.REMOVE_ASSET
 ) {
 
     @BeforeEach
     fun beforeEach() {
         registerUser("admin", "admin")
-        registerUsers(*ExampleUsers.values())
+        registerUsers(*ApmtUsers.values())
 
         stubFor(
             delete(urlPathMatching("/content/dam/my-product/(images|screens)"))
@@ -30,7 +30,7 @@ class ExampleRemoveAssetTest : RemoveAssetTest(
         )
         stubFor(
             delete(urlPathMatching("/content/dam/my-product/(images|screens)"))
-                .withHeader(CSRF_TOKEN, equalTo(ExampleUsers.SUPER_AUTHOR.username))
+                .withHeader(CSRF_TOKEN, equalTo(ApmtUsers.SUPER_AUTHOR.username))
                 .willReturn(aResponse().withStatus(204))
         )
     }

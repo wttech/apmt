@@ -3,6 +3,7 @@ package com.cognifide.apmt.tests.resource
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.resource.CreateResource
+import com.cognifide.apmt.actions.resource.RemoveResource
 import com.cognifide.apmt.common.Resource
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
@@ -13,33 +14,39 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Check user permissions to create resources")
-abstract class CreateResourceTest(
+@DisplayName("Check user permissions to remove resources")
+abstract class RemoveResourceTest(
     vararg testCases: TestCase,
-    private val resource: (Resource.() -> Unit)
+    private val resource: (Resource.() -> Unit) = {}
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
 
-    @DisplayName("User can create resources")
+    @DisplayName("User can remove resources")
     @ParameterizedTest
     @Allowed
-    fun userCanCreateResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, resource))
+    fun userCanRemoveResources(user: User, path: String) {
+        val createResource = CreateResource(authorInstance, user, path, resource)
+        createResource.execute()
+        addUndoAction(createResource)
 
-        CreateResource(authorInstance, user, path, resource).execute()
+        RemoveResource(authorInstance, user, path)
+            .execute()
             .then()
             .assertThat()
-            .statusCode(201)
+            .statusCode(200)
     }
 
-    @DisplayName("User cannot create resources")
+    @DisplayName("User cannot remove resources")
     @ParameterizedTest
     @Denied
-    fun userCannotCreateResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, resource))
+    fun userCannotRemoveResources(user: User, path: String) {
+        val createResource = CreateResource(authorInstance, user, path, resource)
+        createResource.execute()
+        addUndoAction(createResource)
 
-        CreateResource(authorInstance, user, path, resource).execute()
+        RemoveResource(authorInstance, user, path)
+            .execute()
             .then()
             .assertThat()
             .statusCode(500)
