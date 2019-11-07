@@ -3,6 +3,7 @@ package com.cognifide.apmt.tests.resource
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
 import com.cognifide.apmt.actions.resource.CreateResource
+import com.cognifide.apmt.actions.resource.EditResource
 import com.cognifide.apmt.common.Resource
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
@@ -13,33 +14,36 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Check user permissions to create resources")
-abstract class CreateResourceTest(
+@DisplayName("Check user permissions to edit resources")
+abstract class EditResourceTest(
     vararg testCases: TestCase,
-    private val resource: (Resource.() -> Unit)
+    private val createdResource: (Resource.() -> Unit),
+    private val editedResource: (Resource.() -> Unit)
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
 
-    @DisplayName("User can create resources")
+    @DisplayName("User can edit resources")
     @ParameterizedTest
     @Allowed
-    fun userCanCreateResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, resource))
+    fun userCanEditResources(user: User, path: String) {
+        addUndoAction(CreateResource(authorInstance, user, path, createdResource))
 
-        CreateResource(authorInstance, user, path, resource).execute()
+        EditResource(authorInstance, user, path, editedResource)
+            .execute()
             .then()
             .assertThat()
-            .statusCode(201)
+            .statusCode(200)
     }
 
-    @DisplayName("User cannot create resources")
+    @DisplayName("User cannot edit resources")
     @ParameterizedTest
     @Denied
-    fun userCannotCreateResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, resource))
+    fun userCannotEditResources(user: User, path: String) {
+        addUndoAction(CreateResource(authorInstance, user, path, createdResource))
 
-        CreateResource(authorInstance, user, path, resource).execute()
+        EditResource(authorInstance, user, path, editedResource)
+            .execute()
             .then()
             .assertThat()
             .statusCode(500)

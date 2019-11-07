@@ -2,9 +2,9 @@ package com.cognifide.apmt.tests.page
 
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
-import com.cognifide.apmt.actions.Action
 import com.cognifide.apmt.actions.page.CreatePage
 import com.cognifide.apmt.actions.page.EditPage
+import com.cognifide.apmt.common.PageContent
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.tests.Allowed
 import com.cognifide.apmt.tests.ApmtBaseTest
@@ -15,20 +15,27 @@ import org.junit.jupiter.params.ParameterizedTest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Check user permissions to edit pages")
-abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCases) {
+abstract class EditPageTest(
+    vararg testCases: TestCase,
+    private val createdPageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] New Test Page"
+    },
+    private val editedPageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] Edited Test Page"
+    }
+) : ApmtBaseTest(*testCases) {
 
     private var authorInstance = ConfigurationProvider.authorInstance
-    private var undoAction: Action? = null
 
     @DisplayName("User can edit pages")
     @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path)
+        EditPage(authorInstance, user, path, editedPageContent)
             .execute()
             .then()
             .assertThat()
@@ -39,11 +46,11 @@ abstract class EditPageTest(vararg testCases: TestCase) : ApmtBaseTest(*testCase
     @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 
-        EditPage(authorInstance, user, path)
+        EditPage(authorInstance, user, path, editedPageContent)
             .execute()
             .then()
             .assertThat()

@@ -1,7 +1,6 @@
 package com.cognifide.apmt.tests.page
 
-import com.cognifide.apmt.tests.ExampleTestCases
-import com.cognifide.apmt.tests.ExampleUsers
+import com.cognifide.apmt.tests.*
 import com.cognifide.apmt.util.AemStub
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUser
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUsers
@@ -9,14 +8,31 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.junit.jupiter.api.BeforeEach
 
 @AemStub
-class ExampleEditPageTest : EditPageTest(
-    ExampleTestCases.EDIT_PAGE
+class ApmtEditPageTest : EditPageTest(
+    ApmtTestCases.EDIT_PAGE,
+    createdPageContent = {
+        jcrTitle = "[APMT] New Test Page"
+        slingResourceType = APMT_PAGE
+        cqTemplate = APMT_PAGE_TEMPLATE
+
+        "text" {
+            jcrPrimaryType = "nt:unstructured"
+            slingResourceType = APMT_TEXT
+            "value" set "Hello World!"
+        }
+    },
+    editedPageContent = {
+        jcrTitle = "[APMT] Edited Test Page"
+        "text" {
+            "value" set "Good bye!"
+        }
+    }
 ) {
 
     @BeforeEach
     fun beforeEach() {
         registerUser("admin", "admin")
-        registerUsers(*ExampleUsers.values())
+        registerUsers(*ApmtUsers.values())
 
         stubFor(
             post(urlPathEqualTo("/content/my-site/en_gl/home"))

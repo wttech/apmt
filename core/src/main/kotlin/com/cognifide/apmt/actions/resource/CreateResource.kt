@@ -11,14 +11,11 @@ class CreateResource(
     private val instance: Instance,
     private val user: User,
     private val path: String,
-    private val resource: (Resource.() -> Unit)? = null
+    private val resource: (Resource.() -> Unit)
 ) : Action {
 
     override fun execute(): Response {
-        val newResource = Resource()
-        if (resource != null) {
-            newResource.apply(resource)
-        }
+        val newResource = Resource().apply(resource)
         return ActionContext.basicRequestSpec(user, instance)
             .formParams(newResource.toMap())
             .`when`()

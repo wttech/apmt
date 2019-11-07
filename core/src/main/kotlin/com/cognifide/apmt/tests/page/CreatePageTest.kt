@@ -16,7 +16,9 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to create pages")
 abstract class CreatePageTest(
     vararg testCases: TestCase,
-    private val pageContent: (PageContent.() -> Unit)? = null
+    private val pageContent: (PageContent.() -> Unit) = {
+        jcrTitle = "[APMT] New Test Page"
+    }
 ) : ApmtBaseTest(*testCases) {
 
     private val authorInstance = ConfigurationProvider.authorInstance
@@ -25,9 +27,7 @@ abstract class CreatePageTest(
     @ParameterizedTest
     @Allowed
     fun userCanCreatePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        createPage.undo()
-        addUndoAction(createPage)
+        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.adminUser, path))
 
         CreatePage(authorInstance, user, path, pageContent)
             .execute()
@@ -40,9 +40,7 @@ abstract class CreatePageTest(
     @ParameterizedTest
     @Denied
     fun userCannotCreatePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
-        createPage.undo()
-        addUndoAction(createPage)
+        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.adminUser, path))
 
         CreatePage(authorInstance, user, path, pageContent)
             .execute()

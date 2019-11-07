@@ -17,7 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest
 @DisplayName("Check user permissions to open pages")
 abstract class OpenPageTest(
     vararg testCases: TestCase,
-    private var instance: Instance = ConfigurationProvider.authorInstance
+    private val instance: Instance = ConfigurationProvider.authorInstance,
+    private val queryParams: Map<String, String> = mapOf()
 ) : ApmtBaseTest(*testCases) {
 
     @DisplayName("User can open pages")
@@ -30,7 +31,7 @@ abstract class OpenPageTest(
             addUndoAction(createPage)
         }
 
-        OpenPage(instance, user, path)
+        OpenPage(instance, user, path, queryParams)
             .execute()
             .then()
             .assertThat()
@@ -47,7 +48,7 @@ abstract class OpenPageTest(
             addUndoAction(createPage)
         }
 
-        OpenPage(instance, user, path)
+        OpenPage(instance, user, path, queryParams)
             .execute()
             .then()
             .assertThat()

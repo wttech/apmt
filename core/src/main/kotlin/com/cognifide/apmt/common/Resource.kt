@@ -1,10 +1,12 @@
 package com.cognifide.apmt.common
 
-class Resource(
-    var jcrPrimaryType: String? = null,
-    var slingResourceType: String? = null,
-    private val properties: MutableMap<String, String> = mutableMapOf()
-) {
+open class Resource {
+
+    protected val properties: MutableMap<String, String> = mutableMapOf()
+    protected val children: MutableMap<String, Resource> = mutableMapOf()
+
+    var jcrPrimaryType: String? by ResourcePropertyDelegate(properties, "jcr:primaryType")
+    var slingResourceType: String? by ResourcePropertyDelegate(properties, "sling:resourceType")
 
     fun properties(vararg pairs: Pair<String, String>) {
         properties.putAll(pairs)
@@ -14,15 +16,20 @@ class Resource(
         properties[this] = value
     }
 
+    fun addChild(name: String, child: Resource) {
+        children[name] = child
+    }
+
+    operator fun String.invoke(child: Resource.() -> Unit) {
+        children[this] = Resource().apply(child)
+    }
+
     internal fun toMap(): Map<String, String> {
-        val map = mutableMapOf<String, String>()
-        if (jcrPrimaryType != null) {
-            map["jcr:primaryType"] = jcrPrimaryType!!
+        val map = properties.toMutableMap()
+        children.forEach { (name, child) ->
+            val childProperties = child.toMap().mapKeys { entry -> "$name/${entry.key}" }
+            map.putAll(childProperties)
         }
-        if (slingResourceType != null) {
-            map["sling:resourceType"] = slingResourceType!!
-        }
-        map.putAll(properties)
         return map.toMap()
     }
 }
