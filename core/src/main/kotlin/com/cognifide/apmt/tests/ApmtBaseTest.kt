@@ -11,9 +11,9 @@ abstract class ApmtBaseTest(private vararg val testCases: TestCase) {
 
     private var undoActions: MutableList<Action> = mutableListOf()
 
-    fun allowed() = createAllowed(testCases.map { it.toTestCaseConfiguration() })
+    fun allowed() = createAllowed(listOf(*testCases))
 
-    fun denied() = createDenied(testCases.map { it.toTestCaseConfiguration() })
+    fun denied() = createDenied(listOf(*testCases))
 
     fun addUndoAction(action: Action) {
         undoActions.add(action)
