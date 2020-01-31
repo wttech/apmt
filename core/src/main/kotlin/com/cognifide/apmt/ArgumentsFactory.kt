@@ -3,15 +3,15 @@ package com.cognifide.apmt
 import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.params.provider.Arguments
 
-fun createAllowed(testCases: List<TestCaseConfiguration>): List<Arguments> {
+fun createAllowed(testCases: List<TestCase>): List<Arguments> {
     return toArguments(testCases.flatMap { createAllowed(it) }.distinct().sorted())
 }
 
-fun createDenied(testCases: List<TestCaseConfiguration>): List<Arguments> {
+fun createDenied(testCases: List<TestCase>): List<Arguments> {
     return toArguments(testCases.flatMap { createDenied(it) }.distinct().sorted())
 }
 
-private fun createAllowed(testCase: TestCaseConfiguration): List<UserAndPath> {
+private fun createAllowed(testCase: TestCase): List<UserAndPath> {
     return createArguments(
         testCase.paths,
         testCase.allowedUsers,
@@ -22,7 +22,7 @@ private fun createAllowed(testCase: TestCaseConfiguration): List<UserAndPath> {
     )
 }
 
-private fun createDenied(testCase: TestCaseConfiguration): List<UserAndPath> {
+private fun createDenied(testCase: TestCase): List<UserAndPath> {
     return createArguments(
         testCase.paths,
         testCase.deniedUsers,

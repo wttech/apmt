@@ -1,9 +1,9 @@
 package com.cognifide.apmt.tests
 
 import com.cognifide.apmt.TestCase
-import com.cognifide.apmt.TestCaseConfiguration
+import com.cognifide.apmt.User
 
-enum class ApmtTestCases(private val initConfig: TestCaseConfiguration.() -> Unit) : TestCase {
+enum class ApmtTestCases(initConfig: TestCase.() -> Unit) : TestCase {
 
     ADD_ASSET({
         paths(
@@ -73,9 +73,15 @@ enum class ApmtTestCases(private val initConfig: TestCaseConfiguration.() -> Uni
         )
     }), ;
 
-    override fun toTestCaseConfiguration(): TestCaseConfiguration {
-        val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
-        testCaseConfiguration.allUsers(ApmtUsers.values())
-        return testCaseConfiguration
+    override var allowedUsers: List<User> = listOf()
+    override var deniedUsers: List<User> = listOf()
+    override var paths: List<String> = listOf()
+    override var allUsers: List<User> = listOf()
+    override var allowedPairsPredicate: ((user: User, path: String) -> Boolean)? = null
+    override var deniedPairsPredicate: ((user: User, path: String) -> Boolean)? = null
+
+    init {
+        this.apply(initConfig)
+        this.allUsers(ApmtUsers.values())
     }
 }

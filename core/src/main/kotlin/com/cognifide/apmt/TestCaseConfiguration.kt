@@ -1,14 +1,13 @@
 package com.cognifide.apmt
 
 
-class TestCaseConfiguration @JvmOverloads constructor(
-    internal var allowedUsers: List<User> = listOf(),
-    internal var deniedUsers: List<User> = listOf(),
-    internal var paths: List<String> = listOf(),
-    internal var allUsers: List<User> = listOf(),
-    internal var allowedPairsPredicate: ((user: User, path: String) -> Boolean)? = null,
-    internal var deniedPairsPredicate: ((user: User, path: String) -> Boolean)? = null
-) {
+interface ITestCaseConfiguration {
+    var allowedUsers: List<User>
+    var deniedUsers: List<User>
+    var paths: List<String>
+    var allUsers: List<User>
+    var allowedPairsPredicate: ((user: User, path: String) -> Boolean)?
+    var deniedPairsPredicate: ((user: User, path: String) -> Boolean)?
 
     fun allUsers(allUsers: Array<out User>) {
         this.allUsers = allUsers.toList()
@@ -36,5 +35,22 @@ class TestCaseConfiguration @JvmOverloads constructor(
 
     fun deniedPairsPredicate(predicate: (user: User, path: String) -> Boolean) {
         this.deniedPairsPredicate = predicate
+    }
+}
+
+class TestCaseConfiguration @JvmOverloads constructor(
+    override var allowedUsers: List<User> = listOf(),
+    override var deniedUsers: List<User> = listOf(),
+    override var paths: List<String> = listOf(),
+    override var allUsers: List<User> = listOf(),
+    override var allowedPairsPredicate: ((user: User, path: String) -> Boolean)? = null,
+    override var deniedPairsPredicate: ((user: User, path: String) -> Boolean)? = null,
+    initConfig: (TestCaseConfiguration.() -> Unit)? = null
+) : ITestCaseConfiguration {
+
+    init {
+        if (initConfig != null) {
+            this.apply(initConfig)
+        }
     }
 }
