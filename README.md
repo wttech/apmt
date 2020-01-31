@@ -78,8 +78,18 @@ And the simplest example, test which opens a page.
 ```kotlin
 package com.cognifide.apmt.tests
 
+import com.cognifide.apmt.BasicTestCase
+
 class OpenPageTest : com.cognifide.apmt.tests.page.OpenPageTest(
-    TestCases.OPEN_PAGE
+    BasicTestCase {
+        paths(
+          "/content/my-site/en_us/home",
+          "/content/my-site/en_us/home"
+        )
+        allowedUsers(
+          *Users.values()
+        )
+    }
 )
 ```
 ### Alternative enum driven approach
