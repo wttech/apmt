@@ -53,7 +53,26 @@ class ApmtCreatePageTest : CreatePageTest(
                 .willReturn(aResponse().withStatus(201))
         )
         stubFor(
+            post(urlPathMatching("/content/my-site/de_de/home"))
+                .willReturn(aResponse().withStatus(201))
+        )
+        stubFor(
+            post(urlPathMatching("/content/my-site/fr_fr/home"))
+                .willReturn(aResponse().withStatus(201))
+        )
+
+        stubFor(
             post(urlPathMatching("/content/my-site/en_gl/home"))
+                .withHeader(CSRF_TOKEN, equalTo(ApmtUsers.USER.username))
+                .willReturn(aResponse().withStatus(500))
+        )
+        stubFor(
+            post(urlPathMatching("/content/my-site/de_de/home"))
+                .withHeader(CSRF_TOKEN, equalTo(ApmtUsers.USER.username))
+                .willReturn(aResponse().withStatus(500))
+        )
+        stubFor(
+            post(urlPathMatching("/content/my-site/fr_fr/home"))
                 .withHeader(CSRF_TOKEN, equalTo(ApmtUsers.USER.username))
                 .willReturn(aResponse().withStatus(500))
         )
