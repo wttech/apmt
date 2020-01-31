@@ -48,14 +48,48 @@ enum class Users(
     SUPER_AUTHOR("super-author", "password")
 }
 ```
-And definition of test cases.
+Finally, you can add permissions tests. Here is more complicated example, test which creates a page.
+```kotlin
+package com.cognifide.apmt.tests
+
+import com.cognifide.apmt.BasicTestCase
+
+class CreatePageTest : com.cognifide.apmt.tests.page.CreatePageTest(
+    BasicTestCase {
+        paths(
+            "/content/my-site/en_us/home",
+            "/content/my-site/de_de/home"
+        )
+        allowedUsers(
+            Users.AUTHOR,
+            Users.SUPER_AUTHOR
+        )
+    },
+    pageContent = {
+        jcrTitle = "Example Page"
+        slingResourceType = "apmt/components/testPage"
+        cqTemplate = "apmt/templates/testPage"
+
+        "apmtType" set "apmtTestPage"
+    }
+)
+```
+And the simplest example, test which opens a page. 
+```kotlin
+package com.cognifide.apmt.tests
+
+class OpenPageTest : com.cognifide.apmt.tests.page.OpenPageTest(
+    TestCases.OPEN_PAGE
+)
+```
+### Alternative enum driven approach
+Instead of defining tests cases directly in test class, you may use enum class to define them.
 ```kotlin
 package com.cognifide.apmt.tests
 
 import com.cognifide.apmt.TestCase
-import com.cognifide.apmt.TestCaseConfiguration
 
-enum class TestCases(private val initConfig: TestCaseConfiguration.() -> Unit) : TestCase {
+enum class TestCases(private initConfig: TestCase.() -> Unit) : TestCase {
 
     CREATE_PAGE({
         paths(
@@ -77,14 +111,20 @@ enum class TestCases(private val initConfig: TestCaseConfiguration.() -> Unit) :
         )
     });
 
-    override fun toTestCaseConfiguration(): TestCaseConfiguration {
-        val testCaseConfiguration = TestCaseConfiguration().apply(initConfig)
-        testCaseConfiguration.allUsers(Users.values())
-        return testCaseConfiguration
+    override var allowedUsers: List<User> = listOf()
+    override var deniedUsers: List<User> = listOf()
+    override var paths: List<String> = listOf()
+    override var allUsers: List<User> = listOf()
+    override var allowedPairsPredicate: ((user: User, path: String) -> Boolean)? = null
+    override var deniedPairsPredicate: ((user: User, path: String) -> Boolean)? = null
+
+    init {
+        this.apply(initConfig)
+        this.allUsers(ApmtUsers.values())
     }
 }
 ```
-Finally, you can add permissions tests. Here is more complicated example, test which creates a page.
+And here is test class which uses this enum:
 ```kotlin
 package com.cognifide.apmt.tests
 
@@ -97,14 +137,6 @@ class CreatePageTest : com.cognifide.apmt.tests.page.CreatePageTest(
 
         "apmtType" set "apmtTestPage"
     }
-)
-```
-And the simplest example, test which opens a page. 
-```kotlin
-package com.cognifide.apmt.tests
-
-class OpenPageTest : com.cognifide.apmt.tests.page.OpenPageTest(
-    TestCases.OPEN_PAGE
 )
 ```
 ## How does it work?
