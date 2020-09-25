@@ -26,7 +26,7 @@ abstract class OpenPageTest(
     @Allowed
     fun userCanOpenPages(user: User, path: String) {
         if (instance == ConfigurationProvider.authorInstance) {
-            val createPage = CreatePage(instance, ConfigurationProvider.adminUser, path)
+            val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
             createPage.execute()
             addUndoAction(createPage)
         }
@@ -43,7 +43,7 @@ abstract class OpenPageTest(
     @Denied
     fun userCannotOpenPages(user: User, path: String) {
         if (instance == ConfigurationProvider.authorInstance) {
-            val createPage = CreatePage(instance, ConfigurationProvider.adminUser, path)
+            val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
             createPage.execute()
             addUndoAction(createPage)
         }

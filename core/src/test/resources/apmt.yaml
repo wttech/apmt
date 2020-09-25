@@ -1,6 +1,6 @@
 # Instance configuration
 ---
-admin:
+apmt-user:
   username: admin
   password: admin
 instances:

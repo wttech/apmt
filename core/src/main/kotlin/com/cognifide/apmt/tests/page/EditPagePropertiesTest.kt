@@ -22,7 +22,7 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
     @ParameterizedTest
     @Allowed
     fun userCanEditPageProperties(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path)
         createPage.execute()
         addUndoAction(createPage)
 
@@ -37,7 +37,7 @@ abstract class EditPagePropertiesTest(vararg testCases: TestCase) : ApmtBaseTest
     @ParameterizedTest
     @Denied
     fun userCannotEditPageProperties(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path)
         createPage.execute()
         addUndoAction(createPage)
 

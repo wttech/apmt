@@ -22,7 +22,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     @ParameterizedTest
     @Allowed
     fun userCanRemoveAssets(user: User, path: String) {
-        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
+        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path)
         createAsset.execute()
         addUndoAction(createAsset)
 
@@ -37,7 +37,7 @@ abstract class RemoveAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     @ParameterizedTest
     @Denied
     fun userCannotRemoveAssets(user: User, path: String) {
-        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
+        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path)
         createAsset.execute()
         addUndoAction(createAsset)
 

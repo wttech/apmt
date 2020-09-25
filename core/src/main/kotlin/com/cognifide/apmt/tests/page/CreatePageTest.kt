@@ -27,7 +27,7 @@ abstract class CreatePageTest(
     @ParameterizedTest
     @Allowed
     fun userCanCreatePages(user: User, path: String) {
-        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.adminUser, path))
+        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.apmtUser, path))
 
         CreatePage(authorInstance, user, path, pageContent)
             .execute()
@@ -40,7 +40,7 @@ abstract class CreatePageTest(
     @ParameterizedTest
     @Denied
     fun userCannotCreatePages(user: User, path: String) {
-        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.adminUser, path))
+        addUndoAction(CreatePage(authorInstance, ConfigurationProvider.apmtUser, path))
 
         CreatePage(authorInstance, user, path, pageContent)
             .execute()

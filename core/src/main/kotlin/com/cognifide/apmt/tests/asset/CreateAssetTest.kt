@@ -21,7 +21,7 @@ abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     @ParameterizedTest
     @Allowed
     fun userCanCreateAssets(user: User, path: String) {
-        addUndoAction(CreateAsset(authorInstance, ConfigurationProvider.adminUser, path))
+        addUndoAction(CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path))
 
         CreateAsset(authorInstance, user, path)
             .execute()
@@ -34,7 +34,7 @@ abstract class CreateAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testC
     @ParameterizedTest
     @Denied
     fun userCannotCreateAssets(user: User, path: String) {
-        addUndoAction(CreateAsset(authorInstance, ConfigurationProvider.adminUser, path))
+        addUndoAction(CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path))
 
         CreateAsset(authorInstance, user, path)
             .execute()
