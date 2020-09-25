@@ -2,7 +2,7 @@ package com.cognifide.apmt.config
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class Admin(
+data class Principal(
     @field:JsonProperty val username: String,
     @field:JsonProperty val password: String
 )

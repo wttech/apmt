@@ -22,7 +22,7 @@ abstract class ReplicatePageTest(vararg testCases: TestCase) : ApmtBaseTest(*tes
     @ParameterizedTest
     @Allowed
     fun userCanReplicatePage(user: User, path: String) {
-        val createPageAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPageAction = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path)
         createPageAction.execute()
         addUndoAction(createPageAction)
 
@@ -44,7 +44,7 @@ abstract class ReplicatePageTest(vararg testCases: TestCase) : ApmtBaseTest(*tes
     @ParameterizedTest
     @Denied
     fun userCannotReplicatePage(user: User, path: String) {
-        val createPageAction = CreatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val createPageAction = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path)
         createPageAction.execute()
         addUndoAction(createPageAction)
 
@@ -54,7 +54,7 @@ abstract class ReplicatePageTest(vararg testCases: TestCase) : ApmtBaseTest(*tes
             .then()
             .assertThat().statusCode(403)
 
-        val adminPageReplicationAction = ReplicatePage(authorInstance, ConfigurationProvider.adminUser, path)
+        val adminPageReplicationAction = ReplicatePage(authorInstance, ConfigurationProvider.apmtUser, path)
         adminPageReplicationAction.execute()
         addUndoAction(adminPageReplicationAction)
 

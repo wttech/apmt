@@ -15,8 +15,8 @@ object ConfigurationProvider {
     val publishInstance: Instance
         get() = configuration.instances.publish
 
-    val adminUser: User
-        get() = AdminUser(configuration.admin.username, configuration.admin.password)
+    val apmtUser: User
+        get() = ApmtUser(configuration.apmtUser.username, configuration.apmtUser.password)
 
     init {
         configuration = fetchFromFile("/apmt.yaml", Configuration::class.java)
@@ -28,7 +28,7 @@ object ConfigurationProvider {
         }
     }
 
-    private class AdminUser(
+    private class ApmtUser(
         override val username: String,
         override val password: String
     ) : User

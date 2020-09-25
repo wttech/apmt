@@ -28,7 +28,7 @@ abstract class RemovePageTest(
     @ParameterizedTest
     @Allowed
     fun userCanRemovePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, pageContent)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path, pageContent)
         createPage.execute()
         addUndoAction(createPage)
 
@@ -43,7 +43,7 @@ abstract class RemovePageTest(
     @ParameterizedTest
     @Denied
     fun userCannotRemovePages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, pageContent)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path, pageContent)
         createPage.execute()
         addUndoAction(createPage)
 

@@ -31,7 +31,7 @@ abstract class EditPageTest(
     @ParameterizedTest
     @Allowed
     fun userCanEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 
@@ -46,7 +46,7 @@ abstract class EditPageTest(
     @ParameterizedTest
     @Denied
     fun userCannotEditPages(user: User, path: String) {
-        val createPage = CreatePage(authorInstance, ConfigurationProvider.adminUser, path, createdPageContent)
+        val createPage = CreatePage(authorInstance, ConfigurationProvider.apmtUser, path, createdPageContent)
         createPage.execute()
         addUndoAction(createPage)
 

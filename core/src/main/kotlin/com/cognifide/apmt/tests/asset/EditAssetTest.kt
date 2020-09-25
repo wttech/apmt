@@ -22,7 +22,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     @ParameterizedTest
     @Allowed
     fun userCanEditAssets(user: User, path: String) {
-        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
+        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path)
         createAsset.execute()
         addUndoAction(createAsset)
 
@@ -37,7 +37,7 @@ abstract class EditAssetTest(vararg testCases: TestCase) : ApmtBaseTest(*testCas
     @ParameterizedTest
     @Denied
     fun userCannotEditAssets(user: User, path: String) {
-        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.adminUser, path)
+        val createAsset = CreateAsset(authorInstance, ConfigurationProvider.apmtUser, path)
         createAsset.execute()
         addUndoAction(createAsset)
 
