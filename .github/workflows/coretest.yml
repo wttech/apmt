@@ -20,5 +20,5 @@ jobs:
       - name: Add execution rights to gradlew
         run: chmod +x gradlew
 
-      - name: Run core unit tests using gradle
-        run: ./gradlew :core:test --rerun-tasks --stacktrace
+      - name: Run build
+        run: ./gradlew build --stacktrace
