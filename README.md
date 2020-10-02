@@ -1,7 +1,7 @@
 ![Cognifide logo](https://assets.cognifide.com/github/cognifide-logo.png)
 
-[![Build Status](https://travis-ci.org/Cognifide/APM.svg?branch=master)](https://travis-ci.org/Cognifide/APM)
-[![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/cognifide/apm.svg?label=License)](http://www.apache.org/licenses/)
+[![Build Status](https://travis-ci.org/Cognifide/APMT.svg?branch=master)](https://travis-ci.org/Cognifide/APMT)
+[![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/cognifide/apmt.svg?label=License)](http://www.apache.org/licenses/)
 
 # APMT
 
@@ -16,7 +16,7 @@ APMT requires `apmt.yaml` file, which provides data about admin user, and author
  ```yaml
 # Instance configuration
 ---
-admin:
+apmt-user:
   username: admin
   password: admin
 instances:
