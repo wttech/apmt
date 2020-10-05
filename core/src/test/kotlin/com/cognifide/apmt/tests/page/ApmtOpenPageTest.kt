@@ -34,3 +34,54 @@ class ApmtOpenPageOnPublishTest : OpenPageTest(
         verify(0, postRequestedFor(urlPathEqualTo("/content/my-site/en_gl/home")))
     }
 }
+
+@AemStub
+class ApmtOpenPageOnAuthorTest : OpenPageTest(
+    ApmtTestCases.OPEN_PAGE,
+    instance = ConfigurationProvider.authorInstance
+) {
+
+    @BeforeEach
+    fun beforeEach() {
+        registerUser("admin", "admin")
+        registerUsers(*ApmtUsers.values())
+
+        stubFor(
+            get(urlPathEqualTo("/content/my-site/en_gl/home"))
+                .withHeader("apmt-header1", equalTo("apmt-value1"))
+                .withHeader("apmt-header2", equalTo("apmt-value2"))
+                .willReturn(aResponse().withStatus(200))
+        )
+    }
+
+    @AfterEach
+    fun verifyIfPageWasCreated() {
+        verify(0, postRequestedFor(urlPathEqualTo("/content/my-site/en_gl/home")))
+    }
+}
+
+@AemStub
+class ApmtOpenPageOnAuthorWithCreatePageTest : OpenPageTest(
+    ApmtTestCases.OPEN_PAGE,
+    instance = ConfigurationProvider.authorInstance,
+    createPageIfMissing = true
+) {
+
+    @BeforeEach
+    fun beforeEach() {
+        registerUser("admin", "admin")
+        registerUsers(*ApmtUsers.values())
+
+        stubFor(
+            get(urlPathEqualTo("/content/my-site/en_gl/home"))
+                .withHeader("apmt-header1", equalTo("apmt-value1"))
+                .withHeader("apmt-header2", equalTo("apmt-value2"))
+                .willReturn(aResponse().withStatus(200))
+        )
+    }
+
+    @AfterEach
+    fun verifyIfPageWasCreated() {
+        verify(1, postRequestedFor(urlPathEqualTo("/content/my-site/en_gl/home")))
+    }
+}
