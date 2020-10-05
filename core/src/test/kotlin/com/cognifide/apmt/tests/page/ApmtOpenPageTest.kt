@@ -7,10 +7,11 @@ import com.cognifide.apmt.util.AemStub
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUser
 import com.cognifide.apmt.util.AemStubExtension.Companion.registerUsers
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 
 @AemStub
-class ApmtOpenPageTest : OpenPageTest(
+class ApmtOpenPageOnPublishTest : OpenPageTest(
     ApmtTestCases.OPEN_PAGE,
     instance = ConfigurationProvider.publishInstance
 ) {
@@ -26,5 +27,10 @@ class ApmtOpenPageTest : OpenPageTest(
                 .withHeader("apmt-header2", equalTo("apmt-value2"))
                 .willReturn(aResponse().withStatus(200))
         )
+    }
+
+    @AfterEach
+    fun verifyIfPageWasNotCreated() {
+        verify(0, postRequestedFor(urlPathEqualTo("/content/my-site/en_gl/home")))
     }
 }
