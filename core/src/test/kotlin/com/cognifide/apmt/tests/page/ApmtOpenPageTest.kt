@@ -23,9 +23,14 @@ class ApmtOpenPageOnPublishTest : OpenPageTest(
 
         stubFor(
             get(urlPathEqualTo("/content/my-site/en_gl/home"))
-                .withHeader("apmt-header1", equalTo("apmt-value1"))
-                .withHeader("apmt-header2", equalTo("apmt-value2"))
+                .withHeader("CSRF-Token", matching("author|super-author"))
                 .willReturn(aResponse().withStatus(200))
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/content/my-site/en_gl/home"))
+                .withHeader("CSRF-Token", equalTo("user"))
+                .willReturn(aResponse().withStatus(404))
         )
     }
 
@@ -48,14 +53,19 @@ class ApmtOpenPageOnAuthorTest : OpenPageTest(
 
         stubFor(
             get(urlPathEqualTo("/content/my-site/en_gl/home"))
-                .withHeader("apmt-header1", equalTo("apmt-value1"))
-                .withHeader("apmt-header2", equalTo("apmt-value2"))
+                .withHeader("CSRF-Token", matching("author|super-author"))
                 .willReturn(aResponse().withStatus(200))
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/content/my-site/en_gl/home"))
+                .withHeader("CSRF-Token", equalTo("user"))
+                .willReturn(aResponse().withStatus(404))
         )
     }
 
     @AfterEach
-    fun verifyIfPageWasCreated() {
+    fun verifyIfPageWasNotCreated() {
         verify(0, postRequestedFor(urlPathEqualTo("/content/my-site/en_gl/home")))
     }
 }
@@ -74,9 +84,14 @@ class ApmtOpenPageOnAuthorWithCreatePageTest : OpenPageTest(
 
         stubFor(
             get(urlPathEqualTo("/content/my-site/en_gl/home"))
-                .withHeader("apmt-header1", equalTo("apmt-value1"))
-                .withHeader("apmt-header2", equalTo("apmt-value2"))
+                .withHeader("CSRF-Token", matching("author|super-author"))
                 .willReturn(aResponse().withStatus(200))
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/content/my-site/en_gl/home"))
+                .withHeader("CSRF-Token", equalTo("user"))
+                .willReturn(aResponse().withStatus(404))
         )
     }
 

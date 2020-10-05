@@ -69,7 +69,8 @@ enum class ApmtTestCases(initConfig: TestCase.() -> Unit) : TestCase {
             "/content/my-site/en_gl/home"
         )
         allowedUsers(
-            *ApmtUsers.values()
+            ApmtUsers.AUTHOR,
+            ApmtUsers.SUPER_AUTHOR
         )
     }), ;
 
