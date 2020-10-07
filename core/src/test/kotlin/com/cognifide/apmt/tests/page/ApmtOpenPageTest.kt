@@ -74,7 +74,7 @@ class ApmtOpenPageOnAuthorTest : OpenPageTest(
 class ApmtOpenPageOnAuthorWithCreatePageTest : OpenPageTest(
     ApmtTestCases.OPEN_PAGE,
     instance = ConfigurationProvider.authorInstance,
-    createPageIfMissing = true
+    createPage = true
 ) {
 
     @BeforeEach
