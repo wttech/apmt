@@ -18,14 +18,15 @@ import org.junit.jupiter.params.ParameterizedTest
 abstract class OpenPageTest(
     vararg testCases: TestCase,
     private val instance: Instance = ConfigurationProvider.authorInstance,
-    private val queryParams: Map<String, String> = mapOf()
+    private val queryParams: Map<String, String> = mapOf(),
+    private val createPage: Boolean = false
 ) : ApmtBaseTest(*testCases) {
 
     @DisplayName("User can open pages")
     @ParameterizedTest
     @Allowed
     fun userCanOpenPages(user: User, path: String) {
-        if (instance == ConfigurationProvider.authorInstance) {
+        if (createPage && instance == ConfigurationProvider.authorInstance) {
             val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
             createPage.execute()
             addUndoAction(createPage)
@@ -42,7 +43,7 @@ abstract class OpenPageTest(
     @ParameterizedTest
     @Denied
     fun userCannotOpenPages(user: User, path: String) {
-        if (instance == ConfigurationProvider.authorInstance) {
+        if (createPage && instance == ConfigurationProvider.authorInstance) {
             val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
             createPage.execute()
             addUndoAction(createPage)
