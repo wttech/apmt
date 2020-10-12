@@ -34,7 +34,7 @@ abstract class RemoveResourceTest(
             .execute()
             .then()
             .assertThat()
-            .statusCode(200)
+            .statusCode(204)
     }
 
     @DisplayName("User cannot remove resources")
