@@ -27,7 +27,9 @@ abstract class EditResourceTest(
     @ParameterizedTest
     @Allowed
     fun userCanEditResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, createdResource))
+        val createResource = CreateResource(authorInstance, ConfigurationProvider.apmtUser, path, createdResource)
+        addUndoAction(createResource)
+        createResource.execute()
 
         EditResource(authorInstance, user, path, editedResource)
             .execute()
@@ -40,7 +42,9 @@ abstract class EditResourceTest(
     @ParameterizedTest
     @Denied
     fun userCannotEditResources(user: User, path: String) {
-        addUndoAction(CreateResource(authorInstance, user, path, createdResource))
+        val createResource = CreateResource(authorInstance, ConfigurationProvider.apmtUser, path, createdResource)
+        addUndoAction(createResource)
+        createResource.execute()
 
         EditResource(authorInstance, user, path, editedResource)
             .execute()
