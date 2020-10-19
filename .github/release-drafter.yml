@@ -1,3 +1,4 @@
+tag-template: 'apmt-$RESOLVED_VERSION'
 template: |
   ## What’s Changed
 
@@ -20,7 +21,6 @@ categories:
       - 'maintenance'
       - 'documentation'
       - 'other'
-version-template: "apmt-$MAJOR.$MINOR.$PATCH"
 version-resolver:
   major:
     labels:
