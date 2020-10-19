@@ -20,5 +20,17 @@ categories:
       - 'maintenance'
       - 'documentation'
       - 'other'
+version-template: "apmt-$MAJOR.$MINOR.$PATCH"
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: minor
 exclude-labels:
   - 'skip-changelog'
