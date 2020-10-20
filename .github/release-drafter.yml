@@ -31,6 +31,6 @@ version-resolver:
   patch:
     labels:
       - 'patch'
-  default: minor
+  default: patch
 exclude-labels:
   - 'skip-changelog'
