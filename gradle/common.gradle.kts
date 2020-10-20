@@ -109,7 +109,9 @@ allprojects {
         }
 
         extensions.findByType(SigningExtension::class)?.apply {
-            useGpgCmd()
+            val signingKey: String? by project
+            val signingPassword: String? by project
+            useInMemoryPgpKeys(signingKey, signingPassword)
             val publication = extensions.findByType(PublishingExtension::class)?.publications?.findByName("apmt")
             if (publication != null) {
                 sign(publication)
