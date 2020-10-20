@@ -26,24 +26,7 @@ jobs:
       - name: Get version
         run: echo "Releasing version ${{ github.event.release.tag_name }}"
       - name: Verify release
-        run: ./gradlew verifyRelease -Prelease.disableRemoteCheck
-      - name: Configure Maven
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: |
-          cat <<EOF> ~/.m2/settings.xml
-          <settings>
-            <servers>
-              <server>
-                <id>ossrh</id>
-                <username>${OSSRH_USERNAME}</username>
-                <password>${OSSRH_PASSWORD}</password>
-              </server>
-            </servers>
-          </settings>
-          EOF
-          
+        run: ./gradlew verifyRelease -Prelease.disableRemoteCheck          
       - name: Publish version
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
