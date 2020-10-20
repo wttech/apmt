@@ -26,7 +26,7 @@ jobs:
       - name: Get version
         run: echo "Releasing version ${{ github.event.release.tag_name }}"
       - name: Verify release
-        run: ./gradlew verifyRelease
+        run: ./gradlew verifyRelease -Prelease.disableRemoteCheck
       - name: Publish version
         run: ./gradlew publish
         
