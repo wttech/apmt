@@ -12,8 +12,14 @@ jobs:
     steps:
       - name: Dump env
         run: env | sort     
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Get next version
+        run: echo "Releasing version ${{ github.event.release.tag_name }}"
         
