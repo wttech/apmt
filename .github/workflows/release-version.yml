@@ -18,8 +18,13 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
   release:
     runs-on: ubuntu-latest
+    name: Release version
     steps:
       - uses: actions/checkout@master
-      - name: Get next version
+      - name: Get version
         run: echo "Releasing version ${{ github.event.release.tag_name }}"
+      - name: Verify release
+        run: ./gradlew verifyRelease
+      - name: Publish version
+        run: ./gradlew publish
         
