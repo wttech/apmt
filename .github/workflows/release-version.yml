@@ -32,6 +32,7 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: |
+          cd ~ && mkdir .m2
           cat <<EOF> ~/.m2/settings.xml
           <settings>
             <servers>
