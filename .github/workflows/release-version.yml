@@ -21,6 +21,8 @@ jobs:
     name: Release version
     steps:
       - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
       - name: Get version
         run: echo "Releasing version ${{ github.event.release.tag_name }}"
       - name: Verify release
