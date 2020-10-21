@@ -1,3 +1,4 @@
+name-template: 'Release APMT $RESOLVED_VERSION'
 tag-template: 'apmt-$RESOLVED_VERSION'
 template: |
   ## What’s Changed
