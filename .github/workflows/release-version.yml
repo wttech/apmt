@@ -34,6 +34,8 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: ./gradlew publish -PapmtRepositoryUsername=$OSSRH_USERNAME -PapmtRepositoryPassword=$OSSRH_PASSWORD -Dorg.gradle.internal.http.socketTimeout=120000 -Dorg.gradle.internal.http.connectionTimeout=120000 --stacktrace 
+      - name: Debug 
+        run: tree . -R
       - name: Upload Release Asset
         uses: skx/github-action-publish-binaries@release-0.14
         env:
