@@ -43,7 +43,6 @@ jobs:
         uses: skx/github-action-publish-binaries@release-0.14
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ github.event.release.tag_name }}
         with:
           releaseId: ${{ github.event.release.id }}
-          args: "./artifacts/$VERSION.jar"
+          args: './artifacts/apmt-*[0-9].jar'
