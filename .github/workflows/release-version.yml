@@ -31,5 +31,4 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword:  ${{ secrets.GPG_SIGNING_PASSPHRASE }}
-        run: ./gradlew publish
-        
+        run: ./gradlew publish -PapmtRepositoryUsername=${{ secrets.OSSRH_USERNAME }} -PapmtRepositoryPassword=${{ secrets.OSSRH_PASSWORD }} --stacktrace 
