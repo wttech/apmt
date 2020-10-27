@@ -17,7 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest
 abstract class ReadResourceTest(
     vararg testCases: TestCase,
     private val instance: Instance = ConfigurationProvider.authorInstance,
-    private val deniedStatusCode: Int = 403
+    private val deniedStatusCode: Int = 404
 ) : ApmtBaseTest(*testCases) {
 
     @DisplayName("User can read resources")
