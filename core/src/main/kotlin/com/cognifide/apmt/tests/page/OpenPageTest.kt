@@ -2,7 +2,6 @@ package com.cognifide.apmt.tests.page
 
 import com.cognifide.apmt.TestCase
 import com.cognifide.apmt.User
-import com.cognifide.apmt.actions.page.CreatePage
 import com.cognifide.apmt.actions.page.OpenPage
 import com.cognifide.apmt.config.ConfigurationProvider
 import com.cognifide.apmt.config.Instance
@@ -18,20 +17,13 @@ import org.junit.jupiter.params.ParameterizedTest
 abstract class OpenPageTest(
     vararg testCases: TestCase,
     private val instance: Instance = ConfigurationProvider.authorInstance,
-    private val queryParams: Map<String, String> = mapOf(),
-    private val createPage: Boolean = false
+    private val queryParams: Map<String, String> = mapOf()
 ) : ApmtBaseTest(*testCases) {
 
     @DisplayName("User can open pages")
     @ParameterizedTest
     @Allowed
     fun userCanOpenPages(user: User, path: String) {
-        if (createPage && instance == ConfigurationProvider.authorInstance) {
-            val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
-            createPage.execute()
-            addUndoAction(createPage)
-        }
-
         OpenPage(instance, user, path, queryParams)
             .execute()
             .then()
@@ -43,12 +35,6 @@ abstract class OpenPageTest(
     @ParameterizedTest
     @Denied
     fun userCannotOpenPages(user: User, path: String) {
-        if (createPage && instance == ConfigurationProvider.authorInstance) {
-            val createPage = CreatePage(instance, ConfigurationProvider.apmtUser, path)
-            createPage.execute()
-            addUndoAction(createPage)
-        }
-
         OpenPage(instance, user, path, queryParams)
             .execute()
             .then()

@@ -217,5 +217,10 @@ override fun toTestCaseConfiguration(): TestCaseConfiguration {
 }
 ```
 
+## Unit tests
+
+If you have some problems with specific tests you can take a look on unit tests which are located in this repository in `com.cognifide.apmt.tests` package. 
+Please mind that you are interested only in constructor part.
+
 ## License
 **APM** is licensed under [Apache License, Version 2.0 (the "License")](https://www.apache.org/licenses/LICENSE-2.0.txt)
