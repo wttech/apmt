@@ -1,4 +1,4 @@
-![Cognifide logo](https://assets.cognifide.com/github/cognifide-logo.png)
+![WTT logo](docs/wtt-logo.png)
 
 [![Build Status](https://travis-ci.org/Cognifide/APMT.svg?branch=master)](https://travis-ci.org/Cognifide/APMT)
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/cognifide/apmt.svg?label=License)](http://www.apache.org/licenses/)
