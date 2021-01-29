@@ -2,7 +2,7 @@
  * ========================LICENSE_START=================================
  * AEM Permission Management
  * %%
- * Copyright (C) 2013 Cognifide Limited
+ * Copyright (C) 2013 Wunderman Thompson Technology
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ allprojects {
                     pom {
                         name.set("APMT")
                         description.set("AEM Permission Matrix Tester")
-                        url.set("https://github.com/Cognifide/apmt")
+                        url.set("https://github.com/wttech/apmt")
                         licenses {
                             license {
                                 name.set("The Apache License, Version 2.0")
@@ -69,26 +69,26 @@ allprojects {
                             developer {
                                 name.set("Marcin Jędraszczyk")
                                 email.set("marcin.jedraszczyk@cognifide.com")
-                                organization.set("Cognifide")
+                                organization.set("Wunderman Thompson Technology")
                                 organizationUrl.set("https://www.cognifide.com")
                             }
                             developer {
                                 name.set("Michał Krzyżanowski")
                                 email.set("michal.krzyzanowski@cognifide.com")
-                                organization.set("Cognifide")
+                                organization.set("Wunderman Thompson Technology")
                                 organizationUrl.set("https://www.cognifide.com")
                             }
                             developer {
                                 name.set("Bartosz Zbytniewski")
                                 email.set("bartosz.zbytniewski@cognifide.com")
-                                organization.set("Cognifide")
+                                organization.set("Wunderman Thompson Technology")
                                 organizationUrl.set("https://www.cognifide.com")
                             }
                         }
                         scm {
-                            connection.set("https://github.com/Cognifide/apmt.git")
-                            developerConnection.set("https://github.com/Cognifide/apmt.git")
-                            url.set("https://github.com/Cognifide/apmt")
+                            connection.set("https://github.com/wttech/apmt.git")
+                            developerConnection.set("https://github.com/wttech/apmt.git")
+                            url.set("https://github.com/wttech/apmt")
                         }
                     }
                 }
